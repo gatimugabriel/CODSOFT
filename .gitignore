@@ -1,0 +1,7 @@
+.idea
+.vscode
+node_modules/
+task1/job-board-api/.env
+task1/job-board/.env
+.env
+todo.todo

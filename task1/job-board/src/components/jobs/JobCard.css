@@ -1,0 +1,7 @@
+.company-info{
+    @apply flex justify-between
+}
+
+.job-card > .company-info > img{
+    @apply h-20 md:h-20 w-20 my-2 rounded
+}

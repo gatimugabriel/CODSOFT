@@ -1,0 +1,13 @@
+.more-menu {
+    @apply absolute w-fit rounded-md shadow-sm bg-gradient-to-r from-indigo-400 to-indigo-300 text-stone-950 border border-indigo-400 p-2 transition-all duration-500;
+    @apply left-16;
+    @apply md:left-64 lg:left-64;
+}
+
+.sidebar-not-expanded .more-menu {
+    @apply left-16;
+}
+
+.more-menu > * {
+    @apply flex items-center p-1 rounded-md space-x-2 hover:bg-gradient-to-r hover:from-indigo-100 hover:to-indigo-200 hover:text-indigo-800 cursor-pointer
+}

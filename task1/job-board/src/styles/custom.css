@@ -1,0 +1,46 @@
+.btn{
+    @apply text-white rounded-md px-2 py-1 w-fit cursor-pointer hover:border-stone-800 hover:bg-transparent hover:text-black duration-500
+}
+.black-btn{
+    @apply bg-stone-900 border border-stone-900
+}
+.slate-btn{
+    @apply bg-slate-800 border border-slate-700
+}
+
+.green-btn{
+    @apply bg-green-600 border border-green-600
+}
+
+.danger-btn{
+    @apply bg-red-600 border border-red-600
+}
+
+/* Job card */
+.job-card{
+    @apply flex flex-col
+}
+
+.job-card > .details-section{
+    @apply h-5/6
+}
+
+.action-btns{
+    @apply w-full flex items-center mt-4 justify-between
+}
+
+.custom_flex-container{
+    @apply flex flex-col md:flex-row items-center justify-evenly space-x-3 p-2 gap-y-2
+}
+
+/* inputs */
+.input-group{
+    @apply mb-4
+}
+
+label {
+    @apply block text-stone-600 text-sm font-bold mb-2
+}
+input {
+    @apply w-full p-2 border rounded
+}

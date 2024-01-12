@@ -1,0 +1,10 @@
+.filter-container > div > select{
+    @apply py-1 px-3 rounded font-extralight text-stone-950 bg-gradient-to-b from-indigo-200 to-indigo-100 hover:bg-gradient-to-b hover:from-indigo-100 hover:to-indigo-200
+}
+
+.search-container{
+    @apply flex space-x-1 items-center p-2 rounded
+}
+.search-input{
+    @apply p-2 rounded-md mb-2 md:mb-0 w-full
+}

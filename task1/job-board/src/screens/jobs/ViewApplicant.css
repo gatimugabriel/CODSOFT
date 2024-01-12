@@ -1,0 +1,17 @@
+.applicant{
+    background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+}
+
+th, td{
+    @apply py-2 px-4 min-w-max;
+}
+thead  > tr > th  {
+    @apply  text-left;
+}
+
+.actions-cell{
+    @apply flex items-center justify-around space-x-2 py-2 px-4;
+}
+.actions-cell .more-action-btn{
+    @apply text-white hover:bg-indigo-500 py-1 px-2 min-w-max;
+}
