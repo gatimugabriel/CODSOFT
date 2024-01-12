@@ -42,7 +42,7 @@ app.listen(port, async () => {
             console.log(`\n\t connected to ${process.env['DB']} database \n\t syncing models...\n`)
 
             // sync DB
-            await db.sequelize.sync({alter: true})
+            await db.sequelize.sync({force: true})
                 .then(() => {
                     console.log(`\n\t models synchronized successfully \n`)
 
