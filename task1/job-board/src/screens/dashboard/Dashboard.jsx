@@ -1,41 +1,21 @@
-import {Link} from "react-router-dom";
-import {PlusIcon} from "lucide-react";
 import useAuth from "../../hooks/useAuth.js";
 import './Dashboard.css'
+import EmployerDashboard from "../../components/dashboard/EmployerDashboard.jsx";
+import CandidateDashboard from "../../components/dashboard/CandidateDashboard.jsx";
 
-function Dashboard() {
+export default function Dashboard() {
     const {userInfo} = useAuth()
+    // const userName = userInfo?.user?.userName.split(' ')[0]
 
     return (
         <div className="dashboard-container">
             {userInfo?.user?.role === 'employer' ?
-                <>
-                    <Link to={'/create-job'}
-                          className="feature-link">
-                        <PlusIcon/>
-                        New job
-                    </Link>
-                    <Link to={'/create-job'}
-                          className="feature-link">
-                        <PlusIcon/>
-                        New job
-                    </Link>
-
-                    <Link to={'/create-job'}
-                          className="feature-link">
-                        <PlusIcon/>
-                        New job
-                    </Link>
-
-                </>
+                <EmployerDashboard/>
                 :
-
                 <>
-                    dashboard
+                    <CandidateDashboard />
                 </>
             }
         </div>
     );
 }
-
-export default Dashboard;

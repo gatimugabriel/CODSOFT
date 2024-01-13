@@ -30,9 +30,6 @@ export default function Sidebar() {
                 <>
                     <SidebarItem href="/my-jobs" onclick={() => handleClick('/my-jobs')} icon={<Database size={20}/>}
                                  text="my jobs"/>
-                    {/*<SidebarItem href="/statistics" onclick={() => handleClick('/statistics')}*/}
-                    {/*             icon={<BarChart3 size={20}/>}*/}
-                    {/*             text="statistics"/>*/}
                 </>
                 :
 
