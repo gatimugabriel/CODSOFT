@@ -11,4 +11,6 @@ router
     .put(userController.updateUserProfile)
     .delete(userController.deleteUserProfile);
 
+router.get('/profile/all', authMiddleware.requireSuperUser, userController.getAllProfiles)
+
 module.exports = router;

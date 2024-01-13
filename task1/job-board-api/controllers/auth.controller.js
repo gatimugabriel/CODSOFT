@@ -218,10 +218,17 @@ const signIn = asyncHandler(async (req, res) => {
             email: user.email,
             role: user.role
         }
+
+        // save refresh token
+        await Token.create({
+            user_id: user.id,
+            token: refreshToken,
+            action: 'auth'
+        })
+
         return res.status(200).json({
             user: userData,
             accessToken: accessToken,
-            refreshToken: refreshToken
         });
     } else {
         res.status(401);
@@ -239,18 +246,16 @@ const signOut = asyncHandler(async (req, res) => {
 // @ desc ---- Refresh Access Token
 // route  --POST-- [base_api]/auth/refresh
 const refresh = asyncHandler(async (req, res) => {
-    const authHeader = req.header('authorization-refresh-token')
-    const refreshToken = authHeader && authHeader.split(' ')[1]
     const {userId} = req.user
-
     const user = await User.findByPk(+(userId));
+
     if (!user) {
         res.status(404);
         throw new Error("Unknown User");
     }
 
     const userName = `${user.first_name} ${user.last_name}`;
-   // generate new access token only
+    // generate new access token
     const {accessToken} = await tokenGenerator(
         res,
         user.id,
@@ -268,8 +273,7 @@ const refresh = asyncHandler(async (req, res) => {
 
     return res.status(200).json({
         user: userData,
-        accessToken: accessToken,
-        refreshToken: refreshToken // refresh not expired -> send same refresh token back
+        accessToken: accessToken
     });
 });
 

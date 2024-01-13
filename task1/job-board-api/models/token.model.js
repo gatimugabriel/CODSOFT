@@ -18,8 +18,8 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
         },
         action :{
-            type: Sequelize.ENUM('email-verification', 'password-reset'),
-            defaultValue: 'password-reset'
+            type: Sequelize.ENUM('auth', 'email-verification', 'password-reset'),
+            defaultValue: 'auth'
         },
         expires: {
             type: Sequelize.DATE,

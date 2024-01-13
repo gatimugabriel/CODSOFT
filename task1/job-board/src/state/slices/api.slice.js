@@ -9,11 +9,11 @@ const baseQuery = fetchBaseQuery({
     credentials: "include",
     prepareHeaders: (headers, {getState}) => {
         const accessToken = getState().auth.userInfo?.accessToken
-        const refreshToken = getState().auth.userInfo?.refreshToken
+        const userId = getState().auth.userInfo?.user?.userId
 
-        if (accessToken && refreshToken) {
-            headers.set('authorization-refresh-token', `Bearer ${refreshToken}`)
-            headers.set('authorization-access-token', `Bearer ${accessToken}`)
+        if (accessToken ) {
+            headers.set('Authorization', `Bearer ${accessToken}`)
+            headers.set('UID', userId)
         }
         return headers
     },
@@ -40,9 +40,11 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
                 if (refreshResult.data) {
                     // update store with the new token
                     api.dispatch(setCredentials({...refreshResult.data}))
+
                     // retry the initial query
                     result = await baseQuery(args, api, extraOptions)
                 } else {
+                    console.log(refreshResult)
                     if (refreshResult.error && refreshResult.error.status === 401 && refreshResult.error?.data?.message === "Expired Refresh Token") {
                         toast.error('Seems your SESSION has EXPIRED. Please Login Again')
                         api.dispatch(removeCredentials())
@@ -51,7 +53,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
                     }
                 }
             } finally {
-                // release must be called once the mutex should be released again.
                 release()
             }
         } else {
