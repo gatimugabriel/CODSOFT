@@ -10,8 +10,8 @@ import {
 } from "lucide-react";
 
 import SidebarMenu, {SidebarItem} from "./SidebarMenu.jsx";
-import useAuth from "../../../hooks/useAuth.js";
-import useActiveLink from "../../../hooks/useActiveLink.js";
+import useAuth from "../../../../hooks/useAuth.js";
+import useActiveLink from "../../../../hooks/useActiveLink.js";
 
 export default function Sidebar() {
     const {userInfo} = useAuth()

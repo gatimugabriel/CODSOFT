@@ -14,7 +14,7 @@ import store from "./state/store.js";
 import App from './App.jsx'
 import './styles/tailwind.css'
 
-import ErrorComponent from "./components/error/ErrorComponent.jsx";
+import ErrorComponent from "./components/common/error/ErrorComponent.jsx";
 
 // -- screens -- //
 // auth

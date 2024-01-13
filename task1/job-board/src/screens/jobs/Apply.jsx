@@ -2,10 +2,10 @@ import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useNavigate, useParams} from 'react-router-dom';
 import {toast} from 'react-toastify';
-import BackButton from "../../components/navigation/BackButton.jsx";
+import BackButton from "../../components/common/navigation/BackButton.jsx";
 import useAuth from "../../hooks/useAuth.js";
 import {useApplyJobMutation} from "../../state/slices/jobs/jobApi.slice.js";
-import Loader from "../../components/Loader.jsx";
+import Loader from "../../components/common/Loader.jsx";
 
 export default function Apply() {
     const navigate = useNavigate();
@@ -13,6 +13,7 @@ export default function Apply() {
 
     // user
     const {userInfo} = useAuth()
+    console.log(userInfo.user.userName)
     const userName = `${userInfo?.user?.userName.split(' ').join('-').toLowerCase()}`
     const [resume, setResume] = useState(null);
     const [about, setAbout] = useState('');
@@ -121,4 +122,3 @@ export default function Apply() {
         </div>
     );
 }
-

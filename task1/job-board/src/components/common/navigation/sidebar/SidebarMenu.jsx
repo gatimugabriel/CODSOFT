@@ -5,11 +5,11 @@ import {toast} from "react-toastify";
 import {Link, useNavigate} from "react-router-dom";
 
 import './sidebarMenu.css'
-import useAuth from "../../../hooks/useAuth.js";
-import useActiveLink from "../../../hooks/useActiveLink.js";
-import {useSignoutMutation} from "../../../state/slices/auth/authApi.slice.js";
-import {removeCredentials} from "../../../state/slices/auth/auth.slice.js";
-import {removeAllUserJobsData} from "../../../state/slices/jobs/job.slice.js";
+import useAuth from "../../../../hooks/useAuth.js";
+import useActiveLink from "../../../../hooks/useActiveLink.js";
+import {useSignoutMutation} from "../../../../state/slices/auth/authApi.slice.js";
+import {removeCredentials} from "../../../../state/slices/auth/auth.slice.js";
+import {removeAllUserJobsData} from "../../../../state/slices/jobs/job.slice.js";
 
 const SidebarContext = createContext()
 export default function SidebarMenu({children}) {
@@ -52,7 +52,7 @@ export default function SidebarMenu({children}) {
                 {/* Sidebar Header */}
                 <div className="p-4 pb-2 flex justify-between items-center border-b border-b-stone-300">
                     <img
-                        src="../../../../public/vite.svg"
+                        src="../../../../../public/vite.svg"
                         alt="site logo"
                         className={`overflow-hidden transition-all h-10 ${expanded ? "w-32" : "w-0"}`}
                     />

@@ -5,7 +5,7 @@ import {toast} from 'react-toastify';
 import {pdfjs} from "react-pdf";
 
 import './ViewApplicant.css'
-import Loader from '../../components/Loader.jsx';
+import Loader from '../../components/common/Loader.jsx';
 import {useGetJobApplicationsMutation, useGetJobMutation} from '../../state/slices/jobs/jobApi.slice.js';
 import {formatDate} from "../../utils/date.util.js";
 import PdfComponent from "../../components/pdf/PdfComponent.jsx";

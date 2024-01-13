@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {toast} from 'react-toastify';
 
 import JobCard from '../../components/jobs/JobCard.jsx';
-import Loader from '../../components/Loader.jsx';
+import Loader from '../../components/common/Loader.jsx';
 import {useGetUserBookmarksMutation} from '../../state/slices/jobs/jobApi.slice.js';
 import {setUserBookmarks} from '../../state/slices/jobs/job.slice.js';
 import useAuth from '../../hooks/useAuth.js';

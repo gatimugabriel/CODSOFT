@@ -1,6 +1,6 @@
 import {Outlet} from "react-router-dom";
-import Sidebar from "../navigation/sidebar/Sidebar.jsx";
-import BackButton from "../navigation/BackButton.jsx";
+import Sidebar from "../common/navigation/sidebar/Sidebar.jsx";
+import BackButton from "../common/navigation/BackButton.jsx";
 
 export default function Account() {
     return (

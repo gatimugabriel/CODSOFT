@@ -4,7 +4,7 @@ import {toast} from "react-toastify";
 
 import {useGetMyApplicationsMutation, useGetUserBookmarksMutation} from "../../state/slices/jobs/jobApi.slice.js";
 import {setUserApplications, setUserBookmarks} from "../../state/slices/jobs/job.slice.js";
-import Loader from "../../components/Loader.jsx";
+import Loader from "../../components/common/Loader.jsx";
 import JobCard from "../../components/jobs/JobCard.jsx";
 import useAuth from "../../hooks/useAuth.js";
 

@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux';
 import {useCreateJobMutation, useGetJobMutation, useUpdateJobMutation} from '../../state/slices/jobs/jobApi.slice.js';
 import {setEmployerJobs} from '../../state/slices/jobs/job.slice.js';
 import {toast} from 'react-toastify';
-import Loader from '../../components/Loader.jsx';
+import Loader from '../../components/common/Loader.jsx';
 import {PlusIcon, SaveIcon} from 'lucide-react';
 import {useNavigate, useParams} from "react-router-dom";
 import './AddEditJob.css'

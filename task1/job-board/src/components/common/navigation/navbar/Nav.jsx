@@ -1,11 +1,11 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
 
-import '../../../styles/custom.css'
+import '../../../../styles/custom.css'
 import Menu from "./Menu.jsx";
 import MenuItem from "./MenuItem.jsx";
-import useAuth from "../../../hooks/useAuth.js";
-import useActiveLink from "../../../hooks/useActiveLink.js";
+import useAuth from "../../../../hooks/useAuth.js";
+import useActiveLink from "../../../../hooks/useActiveLink.js";
 
 export default function Nav() {
     const {userInfo} = useAuth()
@@ -120,5 +120,3 @@ export default function Nav() {
         </>
     );
 }
-
-
