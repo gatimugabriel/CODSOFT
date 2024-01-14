@@ -3,9 +3,9 @@ import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import './styles/tailwind.css'
-import Nav from "./components/navigation/navbar/Nav.jsx";
-import Footer from "./components/navigation/Footer.jsx";
-import BackToTopButton from "./components/navigation/BackToTopButton.jsx";
+import Nav from "./components/common/navigation/navbar/Nav.jsx";
+import Footer from "./components/common/navigation/Footer.jsx";
+import BackToTopButton from "./components/common/navigation/BackToTopButton.jsx";
 
 function App() {
     return (

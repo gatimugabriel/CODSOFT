@@ -10,8 +10,8 @@ import {
 } from "lucide-react";
 
 import SidebarMenu, {SidebarItem} from "./SidebarMenu.jsx";
-import useAuth from "../../../hooks/useAuth.js";
-import useActiveLink from "../../../hooks/useActiveLink.js";
+import useAuth from "../../../../hooks/useAuth.js";
+import useActiveLink from "../../../../hooks/useActiveLink.js";
 
 export default function Sidebar() {
     const {userInfo} = useAuth()
@@ -30,9 +30,6 @@ export default function Sidebar() {
                 <>
                     <SidebarItem href="/my-jobs" onclick={() => handleClick('/my-jobs')} icon={<Database size={20}/>}
                                  text="my jobs"/>
-                    {/*<SidebarItem href="/statistics" onclick={() => handleClick('/statistics')}*/}
-                    {/*             icon={<BarChart3 size={20}/>}*/}
-                    {/*             text="statistics"/>*/}
                 </>
                 :
 

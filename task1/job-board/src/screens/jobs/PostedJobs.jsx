@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 
 import JobCard from "../../components/jobs/JobCard.jsx";
-import Loader from "../../components/Loader.jsx";
+import Loader from "../../components/common/Loader.jsx";
 import {useGetEmployerJobsMutation, useGetUserBookmarksMutation} from "../../state/slices/jobs/jobApi.slice.js";
 import {setEmployerJobs, setUserBookmarks} from "../../state/slices/jobs/job.slice.js";
 import {Link} from "react-router-dom";
@@ -95,4 +95,3 @@ export default function PostedJobs() {
         </div>
     );
 }
-

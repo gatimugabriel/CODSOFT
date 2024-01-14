@@ -6,7 +6,7 @@ import {MapPinIcon, SearchIcon, WrenchIcon} from "lucide-react";
 import '../../styles/custom.css' // shared styles
 import './JobListing.css'
 import JobCard from "../../components/jobs/JobCard.jsx";
-import Loader from "../../components/Loader.jsx";
+import Loader from "../../components/common/Loader.jsx";
 import {
     useGetJobsMutation, useGetMyApplicationsMutation,
     useGetUserBookmarksMutation,

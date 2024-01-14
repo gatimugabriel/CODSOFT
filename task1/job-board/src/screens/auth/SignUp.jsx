@@ -9,7 +9,7 @@ import '../../styles/custom.css'
 import useAuth from "../../hooks/useAuth.js";
 import {useGoogleMutation, useSignupMutation} from "../../state/slices/auth/authApi.slice.js";
 import {setCredentials} from "../../state/slices/auth/auth.slice.js";
-import Loader from "../../components/Loader.jsx";
+import Loader from "../../components/common/Loader.jsx";
 
 export default function SignUp() {
     const location = useLocation()

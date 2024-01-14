@@ -3,10 +3,10 @@ import {Link} from "react-router-dom";
 export default function Footer() {
     return (
         <footer className="bg-gradient-to-b from-indigo-200 to-stone-200">
-            <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+            <div className="w-full max-w-screen-xl mx-auto p-4 md:pt-8 md:pb-4">
                 <div className="flex flex-col md:flex-row justify-between">
                     <Link to={"/"} className="flex items-center my-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
-                        <img src="../../../public/vite.svg" className="h-8" alt="Job-Board Logo"/>
+                        <img src="../../../../public/vite.svg" className="h-8" alt="Job-Board Logo"/>
                         <span className="self-center text-2xl font-semibold whitespace-nowrap">Job Board</span>
                     </Link>
                     <div
@@ -18,11 +18,10 @@ export default function Footer() {
                         <Link to={"/dashboard"} className="hover:text-black">My Account</Link>
                     </div>
                 </div>
-                <hr className="my-6 border-stone-400 sm:mx-auto lg:my-8"/>
+                <hr className="my-4 border-stone-400 sm:mx-auto lg:my-6"/>
                 <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <Link to={"/"} className="hover:underline">Job-Board™</Link>. All Rights Reserved.</span>
             </div>
         </footer>
 
     );
 }
-

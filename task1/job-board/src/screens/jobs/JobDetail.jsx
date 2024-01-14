@@ -11,7 +11,7 @@ import {
     useGetMyApplicationsMutation,
     useToggleBookmarkMutation
 } from "../../state/slices/jobs/jobApi.slice.js";
-import Loader from "../../components/Loader.jsx";
+import Loader from "../../components/common/Loader.jsx";
 import {removeBookmark, setUserApplications, setUserBookmarks} from "../../state/slices/jobs/job.slice.js";
 import {formatDate} from "../../utils/date.util.js";
 

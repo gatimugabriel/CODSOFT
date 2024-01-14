@@ -4,7 +4,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {toast} from "react-toastify";
 
 import '../../styles/custom.css'
-import Loader from "../../components/Loader.jsx";
+import Loader from "../../components/common/Loader.jsx";
 import {useVerifyUserMutation} from "../../state/slices/auth/authApi.slice.js";
 import {setCredentials} from "../../state/slices/auth/auth.slice.js";
 

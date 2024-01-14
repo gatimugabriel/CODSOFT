@@ -3,9 +3,9 @@ import {Link, useParams} from "react-router-dom";
 import {toast} from "react-toastify";
 
 import '../../styles/custom.css'
-import Loader from "../../components/Loader.jsx";
+import Loader from "../../components/common/Loader.jsx";
 import {useResetPasswordMutation} from "../../state/slices/auth/authApi.slice.js";
-import BackButton from "../../components/navigation/BackButton.jsx";
+import BackButton from "../../components/common/navigation/BackButton.jsx";
 
 export default function ResetPassword() {
     const resetToken = useParams().resetToken;
@@ -166,4 +166,3 @@ export default function ResetPassword() {
     )
 
 }
-

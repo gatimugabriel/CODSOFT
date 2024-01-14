@@ -2,7 +2,7 @@ import {useEffect, useState, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {useGetUserMutation, useUpdateUserMutation} from "../state/slices/profile/profileApi.slice.js";
-import Loader from "../components/Loader.jsx";
+import Loader from "../components/common/Loader.jsx";
 
 export default function Profile() {
     const dataFetchedRef = useRef(false)
