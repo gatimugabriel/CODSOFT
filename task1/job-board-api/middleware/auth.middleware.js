@@ -1,12 +1,12 @@
 const JWT = require("jsonwebtoken");
 const asyncHandler = require('express-async-handler')
-const {User} = require('../models')
+const {User, Token} = require('../models')
 
 const verifyToken = asyncHandler(async (req, res, next) => {
-    const authHeader = req.header('authorization-access-token')
-    const access_token = authHeader && authHeader.split(' ')[1]
+    const authHeader = req.header('Authorization')
+    const accessToken = authHeader && authHeader.split(' ')[1]
 
-    if (!access_token) {
+    if (!accessToken) {
         return res.status(403).json({
             success: false,
             message: "Missing Access Token",
@@ -14,7 +14,7 @@ const verifyToken = asyncHandler(async (req, res, next) => {
     }
 
     await JWT.verify(
-        access_token,
+        accessToken,
         process.env["JWT_SECRET_ACCESS_TOKEN"],
         (err, decoded) => {
             if (err) {
@@ -34,10 +34,10 @@ const verifyToken = asyncHandler(async (req, res, next) => {
 })
 
 const verifyRefreshToken = asyncHandler(async (req, res, next) => {
-    const authHeader = req.header('authorization-refresh-token')
-    const refresh_token = authHeader && authHeader.split(' ')[1]
+    const userId = req.header('UID')
+    const refreshToken = await Token.findOne({where: {user_id: userId, action: 'auth'}})
 
-    if (!refresh_token) {
+    if (!refreshToken) {
         return res.status(403).json({
             success: false,
             message: "Missing Refresh Token",
@@ -45,10 +45,11 @@ const verifyRefreshToken = asyncHandler(async (req, res, next) => {
     }
 
     await JWT.verify(
-        refresh_token,
+        refreshToken.token,
         process.env["JWT_SECRET_REFRESH_TOKEN"],
         (err, decoded) => {
             if (err) {
+                console.log('refresh error >>>',err)
                 if (err.name === 'TokenExpiredError') {
                     res.status(401)
                     throw new Error("Expired Refresh Token")
@@ -64,8 +65,30 @@ const verifyRefreshToken = asyncHandler(async (req, res, next) => {
     );
 })
 
+// const requireRole = asyncHandler(async (req, res, next, requiredRole) => {
+//     const userId = req.user.userId
+//     const user = await User.findByPk(+userId);
+//
+//     console.log(requiredRole)
+//     console.log(user)
+
+//     if (!user) {
+//         req.status(404);
+//         throw new Error("Unknown User!");
+//     } else {
+//         if (user.role !== requiredRole) {
+//             res.status(403);
+//             throw new Error(
+//                 `Forbidden! You must be ${requiredRole} to complete the action`
+//             );
+//         }
+//     }
+//     next();
+// })
+
 const requireEmployer = asyncHandler(async (req, res, next) => {
-    const user = await User.findOne({where: {id: req.user.userId}});
+    const userId = req.user.userId
+    const user = await User.findByPk(+userId);
 
     if (!user) {
         req.status(404);
@@ -82,7 +105,8 @@ const requireEmployer = asyncHandler(async (req, res, next) => {
 })
 
 const requireCandidate = asyncHandler(async (req, res, next) => {
-    const user = await User.findOne({where: {id: req.user.userId}});
+    const userId = req.user.userId
+    const user = await User.findByPk(+userId);
 
     if (!user) {
         req.status(404);
@@ -98,10 +122,29 @@ const requireCandidate = asyncHandler(async (req, res, next) => {
     next();
 })
 
+const requireSuperUser = asyncHandler(async (req, res, next) => {
+    const userId = req.user.userId
+    const user = await User.findByPk(+userId);
+
+    if (!user) {
+        req.status(404);
+        throw new Error("Unknown User!");
+    } else {
+        if (user.role !== 'superUser') {
+            res.status(403);
+            throw new Error(
+                "Forbidden! You must be an Admin to complete the action"
+            );
+        }
+    }
+    next();
+})
+
 const authMiddleware = {
     verifyToken,
     verifyRefreshToken,
     requireEmployer,
-    requireCandidate
+    requireCandidate,
+    requireSuperUser
 };
 module.exports = authMiddleware;

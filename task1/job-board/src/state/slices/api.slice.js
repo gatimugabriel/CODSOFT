@@ -4,16 +4,16 @@ import {removeCredentials, setCredentials} from "./auth/auth.slice.js";
 import {toast} from "react-toastify";
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:8080/api/v1",
-    // baseUrl: "https://job-board-server-r34w.onrender.com/api/v1",
+    // baseUrl: "http://127.0.0.1:8080/api/v1",
+    baseUrl: "https://job-board-server-r34w.onrender.com/api/v1",
     credentials: "include",
     prepareHeaders: (headers, {getState}) => {
         const accessToken = getState().auth.userInfo?.accessToken
-        const refreshToken = getState().auth.userInfo?.refreshToken
+        const userId = getState().auth.userInfo?.user?.userId
 
-        if (accessToken && refreshToken) {
-            headers.set('authorization-refresh-token', `Bearer ${refreshToken}`)
-            headers.set('authorization-access-token', `Bearer ${accessToken}`)
+        if (accessToken ) {
+            headers.set('Authorization', `Bearer ${accessToken}`)
+            headers.set('UID', userId)
         }
         return headers
     },
@@ -40,6 +40,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
                 if (refreshResult.data) {
                     // update store with the new token
                     api.dispatch(setCredentials({...refreshResult.data}))
+
                     // retry the initial query
                     result = await baseQuery(args, api, extraOptions)
                 } else {
@@ -51,7 +52,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
                     }
                 }
             } finally {
-                // release must be called once the mutex should be released again.
                 release()
             }
         } else {

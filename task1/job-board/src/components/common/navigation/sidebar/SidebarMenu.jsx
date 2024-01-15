@@ -17,7 +17,9 @@ export default function SidebarMenu({children}) {
     const navigate = useNavigate()
     const {userInfo} = useAuth()
     const [signoutAPICall, {error}] = useSignoutMutation()
-    const [expanded, seExpanded] = useState(false)
+    const [expanded, seExpanded] = useState(() => {
+        return window.innerWidth >= 768
+    })
     const [moreMenu, setMoreMenu] = useState(false);
 
     const handleSignOut = async () => {

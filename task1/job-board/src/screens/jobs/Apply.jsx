@@ -59,9 +59,9 @@ export default function Apply() {
             toast.success(response.message);
 
             // setTimeout(() => {
-            //     navigate('/jobs')
+            //     navigate('/my-jobs')
             //
-            // }, 2000)
+            // }, 3000)
         } catch (e) {
             console.error(e);
             toast.error(e?.data?.message)

@@ -73,8 +73,20 @@ const deleteUserProfile = asyncHandler(async (req, res) => {
     }
 });
 
+
+// --- SUPER USER ROUTE
+const getAllProfiles = asyncHandler(async  (req, res) => {
+    const users = await User.findAll()
+    if (!users){
+        res.status(500);
+        throw new Error("Error occurred when fetching users");
+    }
+    res.status(200).send(users);
+
+})
 module.exports = {
     getUserProfile,
     updateUserProfile,
-    deleteUserProfile
+    deleteUserProfile,
+    getAllProfiles
 }
