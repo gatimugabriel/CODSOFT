@@ -5,6 +5,14 @@ module.exports = (sequelize, Sequelize) => {
                 primaryKey: true,
                 autoIncrement: true,
             },
+            employer_id: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                references: {
+                    model: "users",
+                    key: "id"
+                }
+            },
             company_name: {
                 type: Sequelize.STRING,
                 allowNull: false,
@@ -16,14 +24,6 @@ module.exports = (sequelize, Sequelize) => {
             company_logo: {
                 type: Sequelize.STRING,
                 allowNull: false,
-            },
-            employer_id: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                references: {
-                    model: "users",
-                    key: "id"
-                }
             }
         },
         {

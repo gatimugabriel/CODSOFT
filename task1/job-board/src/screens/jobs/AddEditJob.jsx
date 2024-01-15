@@ -8,6 +8,7 @@ import {PlusIcon, SaveIcon} from 'lucide-react';
 import {useNavigate, useParams} from "react-router-dom";
 import './AddEditJob.css'
 import useActiveLink from "../../hooks/useActiveLink.js";
+import useAuth from "../../hooks/useAuth.js";
 
 export default function AddEditJob() {
     const dispatch = useDispatch();
@@ -21,11 +22,17 @@ export default function AddEditJob() {
     const [getJobApiCall, {isLoading: getJobLoading, error: getJobError}] = useGetJobMutation();
     const [updateJobApiCall, {isLoading: updateJobLoading, error: updateJobError}] = useUpdateJobMutation();
 
+    // user
+    const {userInfo} = useAuth()
+    // userInfo.user.company is an array
+    const userCompany = userInfo.user.company && userInfo.user.company.length > 0 ? userInfo.user.company[0] : null;
+    const {company_name, company_logo} = userCompany || {};
+
     const [jobData, setJobData] = useState({
         title: '',
         category: '',
-        company: '',
-        companyLogo: '',
+        company: company_name || '',
+        companyLogo: company_logo || '',
         location: '',
         type: '',
         experience: '',
@@ -129,29 +136,24 @@ export default function AddEditJob() {
 
                     {/* Company Details */}
                     <div className="category-input">
-                        <h3>Company Details</h3>
+                        <h3>Company Details </h3>
+                        <h6 className="text-xs mx-auto text-green-500 mb-4">We got you covered here</h6>
                         <label htmlFor="company">Company</label>
                         <input
                             type="text"
                             name="company"
                             value={jobData.company}
                             placeholder="Company*"
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                             required
                         />
-                        <label htmlFor="logo">Select Display Logo</label>
-                        <input
-                            type="text"
-                            name="companyLogo"
-                            value={jobData.companyLogo}
-                            placeholder="Company Logo URL"
-                            onChange={handleInputChange}
-                        />
+                        <label htmlFor="logo">Your Logo</label>
+                        <img src={jobData.companyLogo} alt="company logo" className="h-20 w-20 object-contain"/>
                     </div>
 
                     {/* Job Details */}
                     <div className="category-input">
-                        <h3>Job Details</h3>
+                    <h3>Job Details</h3>
                         <label htmlFor="category">Job Category</label>
                         <input
                             type="text"
@@ -265,7 +267,7 @@ export default function AddEditJob() {
                             type="text"
                             name="experience"
                             value={jobData.experience}
-                            placeholder="Experience (e.g., 3 for 3+ years)*"
+                            placeholder="1, 2, 3..."
                             onChange={handleInputChange}
                             required
                         />
@@ -275,7 +277,7 @@ export default function AddEditJob() {
                             type="text"
                             name="skills"
                             value={jobData.skills}
-                            placeholder="Skills (comma-separated)*"
+                            placeholder="(comma-separated)*"
                             onChange={handleInputChange}
                             required
                         />

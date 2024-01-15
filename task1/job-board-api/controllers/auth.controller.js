@@ -1,8 +1,9 @@
 const asyncHandler = require('express-async-handler')
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
-const {User, Company, Token} = require('../models')
-const {tokenGenerator, nodemailer} = require('../utils')
+const db = require('../models');
+const {sequelize, User, Company, Token} = db;
+const {tokenGenerator, nodemailer, cloudinaryUtil} = require('../utils')
 
 const resendEmailToUnverifiedUser = asyncHandler(async (res, user) => {
     // --- destroy old token and assign a new one
@@ -82,58 +83,94 @@ const googleAuth = asyncHandler(async (req, res) => {
 // route  --POST-- [base_api]/auth/signup
 const signUp = asyncHandler(async (req, res) => {
     const {first_name, last_name, email, password, role, auth_source} = req.body;
-    const {company_name, registration_number, company_logo} = req.body;
+    const {company_name, registration_number} = req.body;
+    let company_logo
+    const t = await sequelize.transaction()
 
-    const userExists = await User.findOne({where: {email}});
-    if (userExists) {
-        res.status(409);
-        throw new Error("This EMAIL is already in use. Use another email");
-    }
+    try {
+        const userExists = await User.findOne({where: {email}});
+        if (userExists) {
+            res.status(409);
+            throw new Error("This EMAIL is already in use. Use another email");
+        }
 
-    const newUser = await User.create({
-        first_name,
-        last_name,
-        email,
-        password,
-        role,
-        auth_source,
-        verified: auth_source === 'google'
-    });
-    if (!newUser) {
-        res.status(500)
-        throw new Error('Failed to register user. Try again later')
-    }
+        if (role === 'employer') {
+            company_logo = req.files.company_logo
+            const companyExists = await Company.findOne({where: {registration_number}})
+            if (companyExists) {
+                res.status(409);
+                throw new Error("Invalid Registration Number. Please check again");
+            }
+        }
 
-    // -- send verification email -- //
-    // generating verification code
-    const newToken = await Token.create({
-        user_id: newUser.id,
-        token: crypto.randomBytes(20).toString("hex"),
-        action: 'email-verification',
-        expires: Date.now() + 2 * 60 * 60 * 1000 // 2 hours
-    })
+        const newUser = await User.create({
+            first_name,
+            last_name,
+            email,
+            password,
+            role,
+            auth_source,
+            verified: auth_source === 'google'
+        }, {transaction: t});
+        if (!newUser) {
+            res.status(500)
+            throw new Error('Failed to register user. Try again later')
+        }
 
-    // send email
-    await nodemailer.sendVerificationEmail(
-        newUser.first_name,
-        newUser.email,
-        newToken.token
-    )
+        // -- send verification email -- //
+        // generating verification code
+        const newToken = await Token.create({
+            user_id: newUser.id,
+            token: crypto.randomBytes(20).toString("hex"),
+            action: 'email-verification',
+            expires: Date.now() + 2 * 60 * 60 * 1000 // 2 hours
+        }, {transaction: t})
 
-    // register users company
-    if (role === 'employer') {
-        await Company.create({
-            company_name,
-            registration_number,
-            company_logo,
-            employer_id: newUser.id
+        // send email
+        await nodemailer.sendVerificationEmail(
+            newUser.first_name,
+            newUser.email,
+            newToken.token
+        )
+
+        // register users company
+        if (role === 'employer') {
+            // upload logo image to CDN
+            await cloudinaryUtil.cloudinary.uploader.upload(
+                company_logo.tempFilePath, {
+                    public_id: `companyLogo_${Date.now()}`,
+                    resource_type: "image",
+                    folder: `${newUser.id}/company/`
+                }
+            ).then(async data => {
+                const newCompany = await Company.create({
+                    employer_id: newUser.id,
+                    company_name,
+                    registration_number,
+                    company_logo: data.secure_url,
+                }, {transaction: t})
+                if (!newCompany) {
+                    res.status(500)
+                    throw new Error('failed to register company')
+                }
+            }).catch(error => {
+                console.log(error)
+                res.status(500)
+                throw new Error('Failed to upload file to server')
+            })
+        }
+
+        await t.commit()
+        res.status(201).json({
+            message:
+                "Registered Successfully. Check your email to verify your account ",
         })
+    } catch (error) {
+        await t.rollback()
+        console.error(error)
+        res.status(500)
+        throw new Error(error)
     }
-
-    res.status(201).json({
-        message:
-            "Registered Successfully. Check your email to verify your account ",
-    })
 })
 
 // @desc ---- Verify email
@@ -184,7 +221,13 @@ const verifyEmail = asyncHandler(async (req, res) => {
 // route  --POST-- [base_api]/auth/signIn
 const signIn = asyncHandler(async (req, res) => {
     const {email, password} = req.body;
-    const user = await User.findOne({where: {email}});
+    const user = await User.findOne({
+        where: {email},
+        include: [{
+            model: Company,
+            attributes: ['company_name', 'registration_number', 'company_logo']
+        }]
+    });
 
     if (!user) {
         res.status(404);
@@ -216,7 +259,8 @@ const signIn = asyncHandler(async (req, res) => {
             userName,
             userId: user.id,
             email: user.email,
-            role: user.role
+            role: user.role,
+            company: user.companies
         }
 
         // save refresh token
@@ -247,8 +291,13 @@ const signOut = asyncHandler(async (req, res) => {
 // route  --POST-- [base_api]/auth/refresh
 const refresh = asyncHandler(async (req, res) => {
     const {userId} = req.user
-    const user = await User.findByPk(+(userId));
-
+    const user = await User.findOne({
+        where: {id: userId},
+        include: [{
+            model: Company,
+            attributes: ['company_name', 'registration_number', 'company_logo']
+        }]
+    });
     if (!user) {
         res.status(404);
         throw new Error("Unknown User");
@@ -268,7 +317,8 @@ const refresh = asyncHandler(async (req, res) => {
         userName,
         userId: user.id,
         email: user.email,
-        role: user.role
+        role: user.role,
+        company: user.companies
     }
 
     return res.status(200).json({

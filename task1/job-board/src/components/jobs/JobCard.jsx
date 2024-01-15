@@ -77,7 +77,7 @@ function JobCard({job, userIsEmployer}) {
             className="job-card bg-slate-200 h-full w-full px-6 py-6 border border-stone-900 md:border-none dark:border-white rounded-md overflow-hidden">
             <div className="details-section">
                 <div className="company-info">
-                    <img src={job.companyLogo} alt="company logo"/>
+                    <img src={job.companyLogo} alt="company logo" className="h-20 w-20 object-contain"/>
                     <h4 className="bg-stone-500 text-slate-50 px-1 h-fit rounded">{job.company}</h4>
                 </div>
                 {/*<h1>{job.id}</h1>*/}

@@ -27,6 +27,7 @@ export default function SignUp() {
 
     const [successMessage, setSuccessMessage] = useState('')
     const [showPassword, setShowPassword] = useState(false)
+    const [formErrors, setFormErrors] = useState({});
 
     //  generic toggle function
     const toggleState = (state, setState) => {
@@ -39,14 +40,6 @@ export default function SignUp() {
     const [totalSteps, setTotalSteps] = useState(2)
     const [currentStep, setCurrentStep] = useState(1)
 
-    const nextStep = () => {
-        setCurrentStep((prevStep) => prevStep + 1);
-    };
-
-    const prevStep = () => {
-        setCurrentStep((prevStep) => prevStep - 1);
-    };
-
     // user details
     const [userRole, setUserRole] = useState('');
     const [formData, setFormData] = useState({
@@ -57,20 +50,57 @@ export default function SignUp() {
         confirm_password: "",
         role: userRole,
 
-        // company details
         company_name: "",
         company_logo: "",
-        registration_number: ""
+        registration_number: "",
     });
 
+    const validateCompanyForm = () => {
+        const errors = {};
+
+        console.log(currentStep, userRole)
+        console.log(formData)
+
+        if (currentStep === 2 && userRole === 'employer') {
+            if (!formData.company_name.trim()) {
+                errors.company_name = "Company Name is required";
+            }
+
+            if (!formData.registration_number.trim()) {
+                errors.registration_number = "Registration Number is required";
+            }
+
+            if (!formData.company_logo) {
+                errors.company_logo = "Company Logo is required";
+            }
+        }
+
+        return errors;
+    };
+
+    const nextStep = () => {
+        const errors = validateCompanyForm()
+
+        if (Object.keys(errors).length > 0) {
+            setFormErrors(errors)
+            return
+        }
+        setFormErrors({})
+
+        setCurrentStep((prevStep) => prevStep + 1);
+    };
+
+    const prevStep = () => {
+        setCurrentStep((prevStep) => prevStep - 1);
+    };
 
     const handleInputChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [e.target.name]: e.target.name === "company_logo" ? e.target.files[0] : e.target.value,
             role: userRole
-        });
-    };
+        }))
+    }
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -83,22 +113,28 @@ export default function SignUp() {
                 return;
             }
 
-            const response = await signupAPICall(formData).unwrap()
+            const dataToSend = new FormData()
+            Object.entries(formData).forEach(([key, value]) => {
+                dataToSend.append(key, value)
+            })
+
+            const response = await signupAPICall(dataToSend).unwrap()
             setSuccessMessage(response.message)
 
-            // setFormData({
-            //     first_name: "",
-            //     last_name: "",
-            //     email: "",
-            //     password: "",
-            //     confirm_password: "",
-            //     role: userRole,
-            //
-            //     company_name: "",
-            //     registration_number: "",
-            //     company_logo: ""
-            // });
-        } catch (err) {
+            setFormData({
+                first_name: "",
+                last_name: "",
+                email: "",
+                password: "",
+                confirm_password: "",
+                role: userRole,
+
+                company_name: "",
+                registration_number: "",
+                company_logo: ""
+            });
+        } catch
+            (err) {
             toast.error(err?.data?.message || err?.data?.errors[0]?.msg || err.error);
         }
     }
@@ -192,9 +228,10 @@ export default function SignUp() {
                                     value={formData.company_name}
                                     onChange={handleInputChange}
                                 />
+                                {formErrors.company_name && <p className="text-red-500">{formErrors.company_name}</p>}
                             </div>
                             <div className="input-group">
-                                <label htmlFor="company_name">Registration Number</label>
+                                <label htmlFor="registration_number">Registration Number</label>
                                 <input
                                     type="text"
                                     name="registration_number"
@@ -203,17 +240,19 @@ export default function SignUp() {
                                     value={formData.registration_number}
                                     onChange={handleInputChange}
                                 />
+                                {formErrors.registration_number &&
+                                    <p className="text-red-500">{formErrors.registration_number}</p>}
                             </div>
                             <div className="input-group">
-                                <label htmlFor="company_name">Registration Number</label>
+                                <label htmlFor="company_logo">Choose Logo</label>
                                 <input
-                                    type="text"
+                                    type="file"
                                     name="company_logo"
-                                    placeholder="choose company/business logo."
+                                    accept=".png, .jpg, .webp, .avif"
                                     required
-                                    value={formData.company_logo}
                                     onChange={handleInputChange}
                                 />
+                                {formErrors.company_logo && <p className="text-red-500">{formErrors.company_logo}</p>}
                             </div>
                         </>
                     )}

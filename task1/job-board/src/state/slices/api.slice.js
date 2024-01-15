@@ -4,8 +4,8 @@ import {removeCredentials, setCredentials} from "./auth/auth.slice.js";
 import {toast} from "react-toastify";
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:8080/api/v1",
-    // baseUrl: "https://job-board-server-r34w.onrender.com/api/v1",
+    // baseUrl: "http://127.0.0.1:8080/api/v1",
+    baseUrl: "https://job-board-server-r34w.onrender.com/api/v1",
     credentials: "include",
     prepareHeaders: (headers, {getState}) => {
         const accessToken = getState().auth.userInfo?.accessToken
@@ -44,7 +44,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
                     // retry the initial query
                     result = await baseQuery(args, api, extraOptions)
                 } else {
-                    console.log(refreshResult)
                     if (refreshResult.error && refreshResult.error.status === 401 && refreshResult.error?.data?.message === "Expired Refresh Token") {
                         toast.error('Seems your SESSION has EXPIRED. Please Login Again')
                         api.dispatch(removeCredentials())

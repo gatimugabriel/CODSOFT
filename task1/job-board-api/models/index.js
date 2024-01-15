@@ -29,6 +29,7 @@ const {Bookmark} = require('./bookmark.model')(sequelize, Sequelize)
 const {JobApplication}= require('./jobApplication.model')(sequelize, Sequelize)
 
 // -- associations -- /
+//-- USER
 // user(employer) --> job
 User.hasMany(Job, {foreignKey: 'employer_id'})
 Job.belongsTo(User, {foreignKey: 'employer_id'})
@@ -37,7 +38,7 @@ Job.belongsTo(User, {foreignKey: 'employer_id'})
 User.hasMany(Company, {foreignKey: 'employer_id'})
 Company.belongsTo(User, {foreignKey: 'employer_id'})
 
-// --- Bookmarks --- //
+//-- BOOKMARKS
 // user --> bookmark
 User.hasMany(Bookmark, {foreignKey: 'user_id'})
 Bookmark.belongsTo(User, {foreignKey: 'user_id'})
@@ -46,7 +47,7 @@ Bookmark.belongsTo(User, {foreignKey: 'user_id'})
 Job.hasMany(Bookmark, {foreignKey: 'job_id'})
 Bookmark.belongsTo(Job, {foreignKey: 'job_id'})
 
-// --- Applications --- //
+//-- APPLICATIONS
 // user --> job application
 User.hasMany(JobApplication, { foreignKey: 'user_id' });
 // job application --> user

@@ -220,9 +220,9 @@ const applyJob = asyncHandler(async (req, res) => {
     // upload file to CDN
    await cloudinaryUtil.cloudinary.uploader.upload(
         resume.tempFilePath, {
-            public_id: `${user_id}_${job_id}_${Date.now()}`,
+            public_id: `application_${job_id}_${Date.now()}`,
             resource_type: "raw",
-            folder: "resumes"
+            folder: `${user_id}/resumes/`
         }
     ).then(async (data) => {
        // save application to DB
@@ -231,7 +231,7 @@ const applyJob = asyncHandler(async (req, res) => {
        })
        if (!application) {
            res.status(500)
-           throw new Error('failed to upload resume')
+           throw new Error('failed to create job')
        }
        res.status(201).json({
            message: "application submitted successfully",
