@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
-const {User} = require("../models");
+const {User, Company} = require("../models");
 
 // ---- Get user profile
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -10,7 +10,11 @@ const getUserProfile = asyncHandler(async (req, res) => {
             exclude: [
                 "password"
             ]
-        }
+        },
+        include: [{
+            model: Company,
+            attributes: ['company_name', 'registration_number', 'company_logo']
+        }]
     })
 
     if (!user){

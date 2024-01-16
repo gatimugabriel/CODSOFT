@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {Bookmark} from "lucide-react";
 
 import '../../styles/custom.css'
-import './JobCard.css'
 import {useToggleBookmarkMutation} from "../../state/slices/jobs/jobApi.slice.js";
 import {removeBookmark, setUserBookmarks} from "../../state/slices/jobs/job.slice.js";
 import useAuth from "../../hooks/useAuth.js";
@@ -41,7 +40,7 @@ function JobCard({job, userIsEmployer}) {
 
     const handleBookmark = async () => {
         try {
-            if (!userInfo) {                
+            if (!userInfo) {
                 alert('login first in order to save your favourite jobs')
                 // return (
                 //     <Overlay>
@@ -76,13 +75,14 @@ function JobCard({job, userIsEmployer}) {
         <div
             className="job-card bg-slate-200 h-full w-full px-6 py-6 border border-stone-900 md:border-none dark:border-white rounded-md overflow-hidden">
             <div className="details-section">
-                <div className="company-info">
-                    <img src={job.companyLogo} alt="company logo" className="h-20 w-20 object-contain"/>
+                {/*Company info*/}
+                <div className="flex justify-between">
+                    <img src={job.companyLogo} alt="company logo" className="h-20 w-20 object-fill"/>
                     <h4 className="bg-stone-500 text-slate-50 px-1 h-fit rounded">{job.company}</h4>
                 </div>
-                {/*<h1>{job.id}</h1>*/}
                 <h3 className="text-2xl font-extrabold">{job.title}</h3>
                 <p className="text-stone-600 my-2">{job.salary}</p>
+                <p className="text-stone-500 flex justify-between"> <span>{job.type}</span> <span>Exp: <span className="text-stone-950">{job.experience}</span>+ yrs</span></p>
                 <p className="">{job.skills.map((skill) => (
                     <span
                         key={skill}
