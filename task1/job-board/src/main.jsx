@@ -36,7 +36,7 @@ import Contact from "./screens/Contact.jsx";
 
 // private
 import Account from "./components/layout/Account.jsx"; // account layout
-import Profile from "./screens/Profile.jsx";
+import Profile from "./screens/profile/Profile.jsx";
 import Dashboard from "./screens/dashboard/Dashboard.jsx";
 import PostedJobs from "./screens/jobs/PostedJobs.jsx";
 import Applicants from "./screens/jobs/ViewApplicants.jsx";

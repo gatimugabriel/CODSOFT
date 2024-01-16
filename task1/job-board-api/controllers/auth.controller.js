@@ -184,7 +184,12 @@ const verifyEmail = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Invalid/Expired link!");
     }
-    const user = await User.findByPk(token.user_id);
+    const user = await User.findOne({
+        where: {id: token.user_id}, include: [{
+            model: Company,
+            attributes: ['company_name', 'registration_number', 'company_logo']
+        }]
+    });
     user.verified = true
     const verifiedUser = await user.save()
     const removeToken = await token.destroy()
@@ -199,17 +204,24 @@ const verifyEmail = asyncHandler(async (req, res) => {
             user.role
         );
 
+        // save refresh token
+        await Token.create({
+            user_id: user.id,
+            token: refreshToken,
+            action: 'auth'
+        })
+
         const userData = {
             userName,
             email: user.email,
-            role: user.role
+            role: user.role,
+            company: user.companies
         }
         return res.status(200)
             .json({
                 message: "Email verified successfully",
                 user: userData,
-                accessToken,
-                refreshToken
+                accessToken
             })
     } else {
         res.status(500);
@@ -234,14 +246,14 @@ const signIn = asyncHandler(async (req, res) => {
         throw new Error("Invalid credentials");
     }
 
-    if (user.auth_source !== 'self') {
-        res.status(400);
-        throw new Error(`This email was registered via ${user.auth_source}. To login, use ${user.auth_source}`);
-    }
-
     // -- resend verification email if user is !verified
     if (!user.verified) {
         return resendEmailToUnverifiedUser(res, user)
+    }
+
+    if (user.auth_source !== 'self') {
+        res.status(400);
+        throw new Error(`This email was registered via ${user.auth_source}. To login, use ${user.auth_source}`);
     }
 
     // compare password
@@ -255,6 +267,13 @@ const signIn = asyncHandler(async (req, res) => {
             user.role
         );
 
+        // save refresh token
+        await Token.create({
+            user_id: user.id,
+            token: refreshToken,
+            action: 'auth'
+        })
+
         const userData = {
             userName,
             userId: user.id,
@@ -262,13 +281,6 @@ const signIn = asyncHandler(async (req, res) => {
             role: user.role,
             company: user.companies
         }
-
-        // save refresh token
-        await Token.create({
-            user_id: user.id,
-            token: refreshToken,
-            action: 'auth'
-        })
 
         return res.status(200).json({
             user: userData,
@@ -280,10 +292,20 @@ const signIn = asyncHandler(async (req, res) => {
     }
 });
 
-// @ desc ---- Logout user -> destroy cookies
+// @ desc ---- Logout user -> destroy refresh token
 // route  --POST-- [base_api]/auth/sign-out
 const signOut = asyncHandler(async (req, res) => {
-    console.log(req.user)
+    const {userId} = req.user
+
+    const destroyToken = await Token.destroy({
+        where: {userId: userId, action: 'auth'}
+    })
+
+    if (!destroyToken){
+        res.status(500)
+        throw new Error('Failed to logout')
+    }
+
     res.status(200).json({message: "Logged Out"});
 });
 
@@ -291,8 +313,7 @@ const signOut = asyncHandler(async (req, res) => {
 // route  --POST-- [base_api]/auth/refresh
 const refresh = asyncHandler(async (req, res) => {
     const {userId} = req.user
-    const user = await User.findOne({
-        where: {id: userId},
+    const user = await User.findByPk(userId, {
         include: [{
             model: Company,
             attributes: ['company_name', 'registration_number', 'company_logo']
