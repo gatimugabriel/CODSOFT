@@ -12,7 +12,7 @@ router.post('/signup',
     authController.signUp)
 router.post('/verify-email/:verificationCode', authController.verifyEmail)
 router.post('/signin', authController.signIn)
-router.post('/sign-out', authController.signOut)
+router.post('/sign-out', [authMiddleware.verifyToken], authController.signOut)
 router.get('/refresh', authMiddleware.verifyRefreshToken, authController.refresh)
 
 // -- password reset

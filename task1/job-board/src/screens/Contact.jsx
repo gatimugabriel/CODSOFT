@@ -1,4 +1,5 @@
 import {useState} from "react";
+import BackButton from "../components/common/navigation/BackButton.jsx";
 
 export default function Contact() {
     const [formData, setFormData] = useState({
@@ -15,15 +16,17 @@ export default function Contact() {
     }
 
     const handleSubmit = async (e) => {
-            e.preventDefault()
+        e.preventDefault()
 
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-bl from-stone-200 to-indigo-200">
-            <div className="bg-white p-8 rounded shadow-md max-w-md w-full">
-                <h2 className="text-2xl font-bold mb-6">Contact Us</h2>
-                <form onSubmit={handleSubmit}>
+        <div className="min-h-screen py-2 bg-gradient-to-bl from-stone-200 to-indigo-200">
+            <BackButton />
+            <div className="flex justify-center md:items-center mt-10 md:mt-2">
+                <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md max-w-md w-full mx-2">
+                    <h2 className="text-2xl font-bold mb-6">Contact Us</h2>
+
                     <div className="mb-4">
                         <label htmlFor="name" className="block text-slate-600 text-sm font-semibold mb-2">
                             Your Name

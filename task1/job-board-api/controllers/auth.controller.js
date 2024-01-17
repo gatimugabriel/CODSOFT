@@ -295,10 +295,10 @@ const signIn = asyncHandler(async (req, res) => {
 // @ desc ---- Logout user -> destroy refresh token
 // route  --POST-- [base_api]/auth/sign-out
 const signOut = asyncHandler(async (req, res) => {
-    const {userId} = req.user
+    const { userId } = req.user
 
     const destroyToken = await Token.destroy({
-        where: {userId: userId, action: 'auth'}
+        where: {user_id: userId, action: 'auth'}
     })
 
     if (!destroyToken){
