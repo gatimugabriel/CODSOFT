@@ -65,7 +65,7 @@ export const jobApiSlice = apiSlice.injectEndpoints({
             query: (data) => ({
                 url: `${JOBS_URL}/${data.jobId}/apply`,
                 method: "POST",
-                body: data.formData
+                body: data.data
             })
         }),
         getMyApplications: builder.mutation({

@@ -8,7 +8,8 @@ import './ViewApplicant.css'
 import Loader from '../../components/common/Loader.jsx';
 import {useGetJobApplicationsMutation, useGetJobMutation} from '../../state/slices/jobs/jobApi.slice.js';
 import {formatDate} from "../../utils/date.util.js";
-import PdfComponent from "../../components/pdf/PdfComponent.jsx";
+import PdfModalComponent from "../../components/jobApplicants/pdf/PdfModalComponent.jsx";
+import DetailsModal from "../../components/jobApplicants/applicant/DetailsModal.jsx";
 
 export default function ViewApplicants() {
     const dataFetchedRef = useRef(false);
@@ -21,6 +22,8 @@ export default function ViewApplicants() {
     // pdf
     const [pdf, setPdf] = useState(null);
     const [viewingPdf, setViewingPdf] = useState(false);
+    const [viewingDetails, setViewingDetails] = useState(false);
+    const [applicant, setApplicant] = useState(null);
 
     // job
     const {jobId} = useParams();
@@ -55,12 +58,22 @@ export default function ViewApplicants() {
     };
 
     const handleViewResume = async (resumePath) => {
+        setViewingDetails(false)
+
         setViewingPdf(true);
         setPdf(resumePath)
     };
 
-    const handleClosePdf = () => {
+    const handleViewDetails = (applicant) => {
+        setViewingPdf(false)
+
+        setViewingDetails(true)
+        setApplicant(applicant)
+    }
+
+    const handleCloseModal = () => {
         setViewingPdf(false);
+        setViewingDetails(false)
     };
 
     useEffect(() => {
@@ -117,15 +130,16 @@ export default function ViewApplicants() {
                                            View Resume
                                         </button>
 
-                                        <button className="more-action-btn bg-green-600">all info</button>
+                                        <button className="more-action-btn bg-green-600" onClick={() => handleViewDetails(applicant)}>all info</button>
                                     </td>
                                 </tr>
                             ))}
                             </tbody>
                         </table>
 
-                        {/* view pdf component */}
-                        {viewingPdf && <PdfComponent pdf={pdf} onClose={handleClosePdf}/>}
+                        {/* view pdf & details components */}
+                        {viewingPdf && <PdfModalComponent pdf={pdf} onClose={handleCloseModal}/>}
+                        {viewingDetails && <DetailsModal applicant={applicant} onClose={handleCloseModal} />}
 
                     </div>
                 ) : (

@@ -15,10 +15,9 @@ export default function Apply() {
     const {userInfo} = useAuth()
     const pdfName = `${userInfo?.user?.userName.split(' ').join('-').toLowerCase()}`
 
-
     // job
     const [applyJob, {isLoading, error}] = useApplyJobMutation()
-    const {jobId} = useParams()
+    const {jobId, jobTitle} = useParams()
 
     const [formData, setFormData] = useState( {
         firstName: "",
@@ -27,7 +26,8 @@ export default function Apply() {
         contactPhone: "",
         linkedInProfile: "",
         resume: "",
-        essay: ""
+        essay: "",
+        jobTitle: jobTitle || ""
     })
 
     const handleInputChange = (e) => {
@@ -59,12 +59,20 @@ export default function Apply() {
                 jobId
             }
 
-            console.log(dataToSend)
-            // const response = await applyJob(dataToSend).unwrap()
-            // toast.success(response.message);
+            const response = await applyJob(dataToSend).unwrap()
+            toast.success(response.message);
+            setFormData( {
+                firstName: "",
+                lastName: "",
+                contactEmail: "",
+                contactPhone: "",
+                linkedInProfile: "",
+                resume: "",
+                essay: ""
+            })
 
             // setTimeout(() => {
-            //     navigate('/my-jobs')
+            //     navigate('/applications')
             //
             // }, 3000)
         } catch (e) {
@@ -147,6 +155,7 @@ export default function Apply() {
                         id="resume"
                         name="resume"
                         accept=".pdf, .doc, .docx"
+                        required
                         onChange={handleInputChange}
                         className="border p-2 w-full"
                     />

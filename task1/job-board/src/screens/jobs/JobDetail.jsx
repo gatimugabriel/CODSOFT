@@ -99,7 +99,6 @@ export default function JobDetail() {
     const getJob = async () => {
         try {
             const jobData = await getJobApiCall(jobId).unwrap()
-            console.log(jobData)
             setJob(jobData)
         } catch (e) {
             // console.error(e)
@@ -131,7 +130,7 @@ export default function JobDetail() {
         if (!userInfo) {
             return alert('login first in order to apply for a job')
         }
-        navigate(`/${jobId}/apply`)
+        navigate(`/${jobId}/apply/${job.title}`)
     };
 
     return (

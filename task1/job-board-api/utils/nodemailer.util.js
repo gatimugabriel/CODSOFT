@@ -63,4 +63,31 @@ const sendResetPassword = async (userName, email, token) => {
     }
 }
 
-module.exports = {sendVerificationEmail, sendResetPassword};
+const sendJobApplicationEmail = async (jobTitle, userEmail) => {
+    const mailOptions = {
+        from: mailConfig.EMAIL_SENDER,
+        to: userEmail,
+        subject: "Job Application",
+        html: `
+            <div>
+                <h1>Job Application Successful</h1>
+                <p>Thank you for applying for the position: <strong>${jobTitle}</strong></p>
+                <p>Your application has been received successfully.</p>
+                <p>We will review your application and contact you if you are shortlisted for further consideration.</p>
+                <p>Best regards,</p>
+                <p>The Job Board Team</p>
+            </div>
+        `,
+    };
+
+    try {
+        const info = await transport.sendMail(mailOptions);
+        return info;
+    } catch (error) {
+        throw new Error('Failed to send job application confirmation email. Try again later');
+    }
+};
+
+
+
+module.exports = {sendVerificationEmail, sendResetPassword, sendJobApplicationEmail};

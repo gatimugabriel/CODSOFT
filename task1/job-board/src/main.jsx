@@ -65,7 +65,7 @@ const router = createBrowserRouter(
             <Route element={<PrivateRoute/>}>
                 {/* candidate only route */}
                 <Route element={<RequireRole allowedRole={'candidate'}/>}>
-                    <Route path="/:jobId/apply" element={<Apply/>}/>
+                    <Route path="/:jobId/apply/:jobTitle" element={<Apply/>}/>
                 </Route>
 
                 {/* routes with account layout */}
