@@ -34,7 +34,7 @@ export default function AddEditJob() {
         company: company_name || '',
         companyLogo: company_logo || '',
         location: '',
-        type: '',
+        type: 'Full-time',
         experience: '',
         description: '',
         skills: '',
@@ -86,7 +86,6 @@ export default function AddEditJob() {
             jobId
         }
         try {
-
             let response
             if (activeLink === '/create-job') {
                 response = await createJobApiCall(dataToSend).unwrap();
@@ -154,7 +153,7 @@ export default function AddEditJob() {
 
                     {/* Job Details */}
                     <div className="category-input">
-                    <h3>Job Details</h3>
+                        <h3>Job Details</h3>
                         <label htmlFor="category">Job Category</label>
                         <input
                             type="text"
@@ -185,10 +184,9 @@ export default function AddEditJob() {
                         <div className="p-1 rounded bg-indigo-200 my-1">
                             <label htmlFor="type">Job Type:</label>
                             <select className="px-3 mb-2 bg-stone-100 rounded" name="type" id="type"
-                                    defaultValue="Full-time"
-                                    value={jobData.type} onChange={handleInputChange} required>
+                                    value={jobData.type} defaultValue={jobData.type} onChange={handleInputChange} required>
                                 <option value="Full-time" selected>Full-Time</option>
-                                <option value="Part-time">Part-Time</option>
+                                <option value="Part-time" >Part-Time</option>
                                 <option value="Contract">Contract</option>
                             </select>
                         </div>

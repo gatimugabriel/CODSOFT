@@ -59,13 +59,10 @@ const addJob = asyncHandler(async (req, res) => {
     const newJob = await Job.create({
         title, category, company, companyLogo, location, type, experience, description, skills, salary, employer_id
     });
-    if (newJob) {
-        res.status(201).json({message: "job created successfully", newJob: newJob});
-
-    } else {
-        console.error(error);
+    if (!newJob) {
         res.status(500).json({success: false, message: 'Server error occurred'});
     }
+    res.status(201).json({message: "job created successfully", newJob: newJob});
 });
 
 // @ desc ---- View a Job  @ access -- all
