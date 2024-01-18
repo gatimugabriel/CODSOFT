@@ -63,16 +63,16 @@ JobApplication.belongsTo(Job, {
 });
 
 // job <-> company
-Company.hasMany(Job, {
-    foreignKey: 'employer_id',
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE'
-});
-Job.belongsTo(Company, {
-    foreignKey: 'employer_id',
-    targetKey: 'employer_id', as: 'employer',
-    onUpdate: 'CASCADE'
-});
+// Company.hasMany(Job, {
+//     foreignKey: 'employer_id',
+//     onUpdate: 'CASCADE',
+//     onDelete: 'CASCADE'
+// });
+// Job.belongsTo(Company, {
+//     foreignKey: 'employer_id',
+//     targetKey: 'employer_id', as: 'employer',
+//     onUpdate: 'CASCADE'
+// });
 
 Object.assign(db, {User, Job, Company, Token, Bookmark, JobApplication})
 
