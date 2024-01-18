@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {Document, Page} from 'react-pdf';
-import {Check, ChevronLeft, ChevronRight, X} from "lucide-react";
+import {ChevronLeft, ChevronRight, X} from "lucide-react";
 
 import './PdfModalComponent.css'
 
@@ -54,13 +54,6 @@ export default function PdfModalComponent({pdf, onClose}) {
                 <p>
                     Page <span className="font-bold">{pageNumber}</span> of <span className="font-bold">{numPages}</span>
                 </p>
-                {/*<div className="flex flex-col items-center">*/}
-                {/*    <Check*/}
-                {/*        size={32}*/}
-                {/*        className="cursor-pointer rounded text-white bg-green-600 hover:bg-green-800"*/}
-                {/*    />*/}
-                {/*    <p className="text-green-700"> Select Candidate</p>*/}
-                {/*</div>*/}
             </nav>
 
             <Document

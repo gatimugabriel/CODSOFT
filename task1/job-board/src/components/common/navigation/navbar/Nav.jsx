@@ -110,7 +110,7 @@ export default function Nav() {
                             <Link
                                 to={"/create-job"}
                                 onClick={handleMenuItemClick}
-                                className="flex items-center h-12 w-fit px-4 m-4 ml-1 rounded-md bg-green-600 text-white hover:text-white hover:bg-transparent border border-green-600 hover:border hover:border-stone-800 duration-500"
+                                className="flex w-fit text-center py-3 px-4 m-4 ml-1 rounded-md bg-green-600 text-white hover:text-white hover:bg-transparent border border-green-600 hover:border hover:border-stone-800 duration-500"
                             >Post A Job
                             </Link>
                         </>

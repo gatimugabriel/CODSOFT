@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import {Link, Navigate, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {toast} from "react-toastify";
-// import {jwtDecode} from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import {GoogleLogin, GoogleOAuthProvider} from "@react-oauth/google";
 
 import '../../styles/custom.css'
@@ -55,7 +55,6 @@ export default function SignIn() {
                 setSuccessMessage(response.emailVerificationMessage)
                 toast.success(response.emailVerificationMessage)
             } else {
-                console.log(response)
                 dispatch(setCredentials({...response}))
                 navigate(redirectPath)
             }
@@ -81,8 +80,13 @@ export default function SignIn() {
     //         dispatch(setCredentials({...response}))
     //         navigate(redirectPath)
     //     } catch (e) {
-    //         console.log(e)
-    //         toast.error(e?.data?.message || e.error)
+    //         toast.warning(e?.data?.message || e.error)
+    //         // if (e.status === 400) {
+    //         //     toast.warning('Create an account first...')
+    //         //     navigate('/signup')
+    //         // } else {
+    //         //     toast.error(e?.data?.message || e.error)
+    //         // }
     //     }
     // }
 
@@ -177,7 +181,7 @@ export default function SignIn() {
                             className={`w-full rounded-md h-10 bg-gradient-to-r from-indigo-800 to-indigo-500 hover:bg-gradient-to-r hover:from-indigo-500 hover:to-indigo-800 text-white border border-indigo-800`}
                             disabled={isLoading}
                         >
-                           Sign In
+                            Sign In
                         </button>
 
                 }
