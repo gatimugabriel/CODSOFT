@@ -1,6 +1,6 @@
 const jobsData = [
     {
-        "id": 21,
+        "id": 1,
         "category": "Software Development",
         "title": "Full Stack Developer",
         "company": "Black-Curtain",
@@ -18,7 +18,7 @@ const jobsData = [
         "employer_id": 3
     },
     {
-        "id": 22,
+        "id": 2,
         "category": "Data Science",
         "title": "Data Scientist",
         "company": "Black-Curtain",

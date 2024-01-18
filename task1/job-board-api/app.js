@@ -43,18 +43,18 @@ app.listen(port, async () => {
             console.log(`\n\t connected to ${process.env['DB']} database \n\t syncing models...\n`)
 
             // sync DB
-            await db.sequelize.sync({alter: true})
+            await db.sequelize.sync({force: true})
                 .then(() => {
                     console.log(`\n\t models synchronized successfully \n`)
 
                     // -- called once --- //
-                    Job.bulkCreate(jobsData)
-                        .then(() => {
-                            console.log(`\n\t data inserted successfully \n\n`);
-                        })
-                        .catch(error => {
-                            console.log(`\n\t failed to insert data! \n\t`, error);
-                        });
+                    // Job.bulkCreate(jobsData)
+                    //     .then(() => {
+                    //         console.log(`\n\t data inserted successfully \n\n`);
+                    //     })
+                    //     .catch(error => {
+                    //         console.log(`\n\t failed to insert data! \n\t`, error);
+                    //     });
                 })
                 .catch(error => {
                     console.log(`\n\t failed to sync models! \n\t`, error)
