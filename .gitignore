@@ -4,7 +4,7 @@ node_modules/
 task1/job-board-api/.env
 task1/job-board/.env
 task1/job-board-api/tmp
-task1/job-board-api/data
+#task1/job-board-api/data
 tasksDocuments
 .env
 todo.todo
