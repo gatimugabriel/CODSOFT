@@ -22,10 +22,10 @@ module.exports = (sequelize, Sequelize) => {
         companyLogo: {
             type: Sequelize.STRING,
             allowNull: false,
-            references: {
-                model: "companies",
-                key: "company_logo"
-            }
+            // references: {
+            //     model: "companies",
+            //     key: "company_logo"
+            // }
         },
         location: {
             type: Sequelize.STRING,
