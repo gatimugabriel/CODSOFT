@@ -45,7 +45,7 @@ app.listen(port, async () => {
             // sync DB
             await db.sequelize.sync({force: true})
                 .then(() => {
-                    console.log(`\n\t models synchronized successfully \n`)
+                    console.log(`\n\t models synchronized successfully\n`)
 
                     // -- called once --- //
                     // Job.bulkCreate(jobsData)
