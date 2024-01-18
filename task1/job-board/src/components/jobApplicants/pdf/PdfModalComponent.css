@@ -9,7 +9,7 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     background-image: linear-gradient(to top, #3db5df 0%, #6f86d6 100%);
 
-    @apply p-10 pt-2 mt-2 rounded overflow-x-scroll;
+    @apply  w-[calc(100vw-4vw)] md:w-auto p-1 md:p-10 pt-2 mt-2 rounded overflow-scroll;
 }
 
 canvas.react-pdf_Page_canvas {

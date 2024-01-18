@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import {PlusIcon, ClipboardCheckIcon, HeartIcon} from "lucide-react"; // Import other icons as needed
+import {PlusIcon, ClipboardCheckIcon, HeartIcon} from "lucide-react";
 
 export default function EmployerDashboard() {
     return (

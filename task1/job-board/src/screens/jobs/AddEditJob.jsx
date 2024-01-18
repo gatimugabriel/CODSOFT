@@ -92,6 +92,7 @@ export default function AddEditJob() {
                 response = await createJobApiCall(dataToSend).unwrap();
                 dispatch(setEmployerJobs([response.newJob]));
             } else {
+                // update details
                 response = await updateJobApiCall(dataToSend).unwrap()
                 // should update state --> employer jobs --> updated job
             }

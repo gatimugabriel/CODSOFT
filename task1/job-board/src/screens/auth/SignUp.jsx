@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {GoogleOAuthProvider, GoogleLogin} from "@react-oauth/google";
 import {toast} from "react-toastify";
-// import {jwtDecode} from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 import '../../styles/custom.css'
 import useAuth from "../../hooks/useAuth.js";

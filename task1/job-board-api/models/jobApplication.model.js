@@ -24,7 +24,31 @@ module.exports = (sequelize, Sequelize) => {
         resumePath: {
             type: Sequelize.STRING,
             allowNull: false
-        }
+        },
+        firstName: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        lastName: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        contactEmail: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        contactPhone: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        linkedInProfile: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        essay: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
     }, {
         freezeTableName: true,
         timestamps: true,

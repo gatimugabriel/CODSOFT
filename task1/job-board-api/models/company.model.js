@@ -8,6 +8,7 @@ module.exports = (sequelize, Sequelize) => {
             employer_id: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
+                unique: true,
                 references: {
                     model: "users",
                     key: "id"
@@ -24,6 +25,7 @@ module.exports = (sequelize, Sequelize) => {
             company_logo: {
                 type: Sequelize.STRING,
                 allowNull: false,
+                unique: true
             }
         },
         {

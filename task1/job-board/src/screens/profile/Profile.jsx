@@ -1,22 +1,28 @@
 import {useEffect, useState, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
+import {useDispatch} from "react-redux";
+
 import {useGetUserMutation, useUpdateUserMutation} from "../../state/slices/profile/profileApi.slice.js";
 import Loader from "../../components/common/Loader.jsx";
 import './Profile.css'
 import useAuth from "../../hooks/useAuth.js";
+import {setCredentials} from "../../state/slices/auth/auth.slice.js";
 
 export default function Profile() {
     const dataFetchedRef = useRef(false)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
     const [getProfile, {isLoading: getProfileLoading, error: getProfileError}] = useGetUserMutation()
     const [updateProfile, {isLoading: updateProfileLoading, error: updateProfileError}] = useUpdateUserMutation()
     const [successMessage, setSuccessMessage] = useState('')
     const [showPassword, setShowPassword] = useState(false)
+    const [selectedLogo, setSelectedLogo] = useState(null);
 
     const {userInfo} = useAuth()
     // userInfo.user.company is an array
-    const userCompany = userInfo.user.company && userInfo.user.company.length > 0 ? userInfo.user.company[0] : null;
+    const userCompany = userInfo?.user?.company && userInfo?.user?.company.length > 0 ? userInfo.user.company[0] : null;
     const {company_name, company_logo, registration_number} = userCompany || {};
 
     const [userData, setUserData] = useState({
@@ -37,7 +43,6 @@ export default function Profile() {
         const getUser = async () => {
             try {
                 const response = await getProfile().unwrap()
-                console.log({...response})
                 setUserData({...response})
             } catch (e) {
                 console.error(e)
@@ -66,11 +71,17 @@ export default function Profile() {
         if (userData.password !== userData.confirm_password) {
             toast.error("Passwords do not match");
         } else {
-
             try {
-                const response = await updateProfile(userData).unwrap();
+                const formData = new FormData();
+                formData.append("logo", selectedLogo);
+                Object.entries(userData).forEach(([key, value]) => {
+                    formData.append(key, value);
+                });
+
+                const response = await updateProfile(formData).unwrap();
                 toast.success(response.message);
-                navigate('/dashboard')
+                dispatch(setCredentials({...response}))
+                dataFetchedRef.current = false // trigger useEffect --> refetch user profile
             } catch (err) {
                 toast.error(err?.data?.message || err.error);
             }
@@ -146,6 +157,7 @@ export default function Profile() {
                                         type={showPassword ? "text" : "password"}
                                         name="password"
                                         placeholder="Enter your password"
+                                        required
                                         value={userData.password}
                                         onChange={handleInputChange}
                                     />
@@ -187,7 +199,7 @@ export default function Profile() {
                                         type={showPassword ? "text" : "password"}
                                         name="confirm_password"
                                         placeholder="Confirm your password"
-                                        value={userData.confirm_password}
+                                        required value={userData.confirm_password}
                                         onChange={handleInputChange}
                                     />
                                     {showPassword ?
@@ -251,11 +263,23 @@ export default function Profile() {
                                     />
                                 </div>
 
+                                {/*<div className="input-group">*/}
+                                {/*    <label htmlFor="logo">Your Logo</label>*/}
+                                {/*    <img src={company_logo} alt="company logo"*/}
+                                {/*         className="h-20 w-20 object-contain"/>*/}
+                                {/*</div>*/}
+
                                 <div className="input-group">
-                                    <label htmlFor="logo">Your Logo</label>
-                                    <img src={userData.companyLogo} alt="company logo"
+                                    <label htmlFor="logo">Change Logo</label>
+                                    <img src={company_logo} alt="company logo"
                                          className="h-20 w-20 object-contain"/>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => setSelectedLogo(e.target.files[0])}
+                                    />
                                 </div>
+
 
                             </div>
                         }
@@ -265,7 +289,7 @@ export default function Profile() {
                     {updateProfileLoading && <div className="flex items-center"><Loader/> Please wait...</div>}
                     {updateProfileError &&
                         <p className="flex items-center justify-center w-full p-4 rounded  text-red-500">
-                            {updateProfileError.data.message}
+                            {updateProfileError?.data?.message || updateProfileError}
                         </p>
                     }
 

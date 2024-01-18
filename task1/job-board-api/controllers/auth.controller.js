@@ -36,48 +36,56 @@ const resendEmailToUnverifiedUser = asyncHandler(async (res, user) => {
 // route  --POST-- [base_api]/auth/google
 const googleAuth = asyncHandler(async (req, res) => {
     const {email, first_name, last_name} = req.body;
-    const userName = `${first_name} ${last_name}`;
 
     // check the user with the given Google email
-    const existingUser = await User.findOne({where: {email}});
+    const existingUser = await User.findOne({
+        where: {email},
+        include: [{
+            model: Company,
+            attributes: ['company_name', 'registration_number', 'company_logo']
+        }]
+    })
+
+    if (existingUser && existingUser.auth_source !== 'google') {
+        res.status(400)
+        throw new Error('This email was not registered via google. Use email and password to login')
+    }
+
     if (existingUser && existingUser.auth_source === 'google') {
         // User exists --> signin
-        const {accessToken} = await tokenGenerator(res, existingUser.id, userName, existingUser.email, existingUser.role);
+        const userName = `${first_name} ${last_name}`;
+
+        const {
+            accessToken, refreshToken
+        } = await tokenGenerator(res, existingUser.id, userName, existingUser.email, existingUser.role);
+
+        // save refresh token
+        await Token.create({
+            user_id: existingUser.id,
+            token: refreshToken,
+            action: 'auth'
+        })
+
+        const userData = {
+            userName,
+            userId: existingUser.id,
+            email: existingUser.email,
+            role: existingUser.role,
+            company: existingUser.companies
+        }
+
         res.status(201).json({
-            userName: userName,
+            user: userData,
             accessToken: accessToken
         });
     } else {
-        if (existingUser && existingUser.auth_source !== 'google') {
-            res.status(400)
-            throw new Error('This email was not registered via google. Use email and password to login')
-        }
-        // res.status(409)
-        // throw new Error('Email already registered. Use another email')
+        // user does not exist --> redirect to signup
+        res.status(400).json({
+            success: false,
+            message: 'Account does not exist, sign up first'
+        });
     }
-
-    // user does not exist --> signup
-    const newUser = await User.create({
-        first_name,
-        last_name,
-        email,
-        auth_source: 'google',
-        verified: true,
-    });
-
-    if (!newUser) {
-        res.status(500);
-        throw new Error('Failed to signup with Google. Try again later');
-    }
-
-    // signin the new user
-    const {accessToken} = await tokenGenerator(res, newUser.id, userName, newUser.email, newUser.role);
-
-    res.status(201).json({
-        userName: userName,
-        accessToken: accessToken
-    });
-});
+})
 
 // @ desc --- Register new user
 // route  --POST-- [base_api]/auth/signup
@@ -154,7 +162,6 @@ const signUp = asyncHandler(async (req, res) => {
                     throw new Error('failed to register company')
                 }
             }).catch(error => {
-                console.log(error)
                 res.status(500)
                 throw new Error('Failed to upload file to server')
             })
@@ -298,10 +305,10 @@ const signOut = asyncHandler(async (req, res) => {
     const {userId} = req.user
 
     const destroyToken = await Token.destroy({
-        where: {userId: userId, action: 'auth'}
+        where: {user_id: userId, action: 'auth'}
     })
 
-    if (!destroyToken){
+    if (!destroyToken) {
         res.status(500)
         throw new Error('Failed to logout')
     }

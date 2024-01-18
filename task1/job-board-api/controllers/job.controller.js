@@ -2,6 +2,7 @@ const path = require('path')
 const asyncHandler = require('express-async-handler')
 const {Job, Bookmark, JobApplication, User} = require('../models')
 const {cloudinaryUtil} = require('../utils')
+const {sendJobApplicationEmail} = require("../utils/nodemailer.util");
 
 // @ desc ---- Get Jobs  @ access -- all
 // route  --POST-- [base_api]/jobs
@@ -83,7 +84,7 @@ const viewJob = asyncHandler(async (req, res) => {
 })
 
 const updateJob = asyncHandler(async (req, res) => {
-   const {jobId} = req.params
+    const {jobId} = req.params
     const {
         title, category, company, companyLogo, location, type, experience, description, skills, salary
     } = req.body;
@@ -91,12 +92,12 @@ const updateJob = asyncHandler(async (req, res) => {
     console.log(req.body)
 
     const job = await Job.findByPk(+(jobId))
-    if(!job){
+    if (!job) {
         res.status(404);
         throw new Error("Job not found / already deleted");
     }
 
-    if(title !== job.title  && company !== job.company){
+    if (title !== job.title && company !== job.company) {
         // check for similar
         const existingJob = await Job.findOne({where: {title, company}})
         if (existingJob) {
@@ -129,7 +130,7 @@ const deleteJob = asyncHandler(async (req, res) => {
 const getEmployerJobs = asyncHandler(async (req, res) => {
     const employerId = req.user.userId
 
-    const  data = await Job.findAll({
+    const data = await Job.findAll({
         where: {employer_id: employerId},
         // include: [{
         //     model: JobApplication,
@@ -147,7 +148,7 @@ const getJobApplicants = asyncHandler(async (req, res) => {
     const {jobId} = req.params;
 
     const applicants = await JobApplication.findAll({
-        where: { job_id: jobId },
+        where: {job_id: jobId},
         include: User,
     });
 
@@ -160,10 +161,10 @@ const getResume = asyncHandler(async (req, res, next) => {
     const {resumePath} = req.params;
     const filePath = path.join(__dirname, '../uploads', resumePath)
     res.status(200).sendFile(filePath, (err) => {
-        if (err){
-            console.log('server error',err)
+        if (err) {
+            console.log('server error', err)
             next(err)
-        }else {
+        } else {
             console.log('Resume sent:', resumeName)
             // next()
         }
@@ -207,46 +208,60 @@ const getUserBookmarks = asyncHandler(async (req, res) => {
 // @ desc ---- job application  @ access -- candidate
 // route  --POST-- [base_api]/jobs/:jobId/apply
 const applyJob = asyncHandler(async (req, res) => {
-    const user_id = req.user.userId
-    const job_id = req.params.jobId
+    const {userId} = req.user
+    const {jobTitle, firstName, lastName, contactEmail, contactPhone, linkedInProfile, essay} = req.body
     const {resume} = req.files
+    const {jobId} = req.params
 
-    const existingApplication = await JobApplication.findOne({where: {user_id, job_id}})
+    const existingApplication = await JobApplication.findOne({where: {user_id: userId, job_id: jobId}})
     if (existingApplication) {
         res.status(409)
         throw new Error('You have already applied for this job')
     }
 
     // upload file to CDN
-   await cloudinaryUtil.cloudinary.uploader.upload(
+    await cloudinaryUtil.cloudinary.uploader.upload(
         resume.tempFilePath, {
-            public_id: `application_${job_id}_${Date.now()}`,
+            public_id: `application_${jobId}_${Date.now()}`,
             resource_type: "raw",
-            folder: `${user_id}/resumes/`
+            folder: `${userId}/resumes/`
         }
     ).then(async (data) => {
-       // save application to DB
-       const application = await JobApplication.create({
-           user_id, job_id, resumePath: data.secure_url
-       })
-       if (!application) {
-           res.status(500)
-           throw new Error('failed to create job')
-       }
-       res.status(201).json({
-           message: "application submitted successfully",
-           details: application
-       })
-   }).catch(error => {
-       res.status(500)
-       throw new Error('Failed to upload file to server')
-   })
+        // save application to DB
+        const application = await JobApplication.create({
+            user_id: userId,
+            job_id: jobId,
+            resumePath: data.secure_url,
+            firstName,
+            lastName,
+            contactEmail,
+            contactPhone,
+            linkedInProfile,
+            essay,
+        })
+        if (!application) {
+            res.status(500)
+            throw new Error('failed to create job')
+        }
+
+        // send notification email
+        await sendJobApplicationEmail(jobTitle, contactEmail)
+
+        res.status(201).json({
+            message: "application submitted successfully",
+            details: application
+        })
+    }).catch(error => {
+        res.status(500)
+        throw new Error('Failed to upload file to server')
+    })
+
 })
 
 // @ desc ---- get candidate applications  @ access -- candidate
 // route  --GET-- [base_api]/jobs/applications
 const getCandidateApplications = asyncHandler(async (req, res) => {
-    const userId = req.user.userId
+    const {userId} = req.user
     const applications = await JobApplication.findAll({
         where: {user_id: userId},
         include: Job
