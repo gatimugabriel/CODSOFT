@@ -5,6 +5,7 @@ task1/job-board-api/.env
 task1/job-board/.env
 task1/job-board-api/tmp
 #task1/job-board-api/data
+task2/.idea
 tasksDocuments
 .env
 todo.todo
