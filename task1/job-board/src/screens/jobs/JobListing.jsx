@@ -294,6 +294,7 @@ export default function JobListing() {
             </section>
 
             {/* Jobs List */}
+            {(getApplicationsLoading || getBookmarksLoading || getJobsLoading) && <Loader />}
             {
                 filteredJobs.length === 0
                     ?
