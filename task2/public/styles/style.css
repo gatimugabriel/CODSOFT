@@ -1,0 +1,244 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    transition: all 0.3s ease-in-out;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    padding: 2rem 0;
+
+    min-height: 100vh;
+    max-width: 98vw;
+    color: white;
+    background-color: #253762;
+    /*background-image: url("/public/images/pitch.avif");*/
+    /*background-repeat: no-repeat;*/
+    /*object-fit: contain;*/
+}
+
+main {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+section {
+    padding: 0.5rem 2rem;
+}
+
+/*---- WRAPPERS (TIMELINE & MAIN CONTENT) ----*/
+.timeline--wrapper {
+    width: 35%;
+    margin-right: 16px;
+    padding-top: 24px;
+    background-color: #474e5d;
+}
+
+.main--content {
+    flex: 1;
+    display: flex;
+    /*justify-content: center;*/
+    align-items: center;
+
+    padding: 0;
+    width: 100%;
+    flex-direction: column;
+
+}
+
+/*---- END OF WRAPPERS (TIMELINE & MAIN CONTENT) ----*/
+
+
+/*---- TIMELINE CHILDREN STYLES ----*/
+.timeline--wrapper > h2 {
+    color: white;
+    margin-bottom: 16px;
+}
+
+/* timeline (the vertical ruler) */
+.timeline {
+    position: relative;
+    /*margin: 0 auto;*/
+}
+
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    background-color: white;
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    margin-left: -3px;
+}
+
+.timeline--item {
+    padding: 10px 40px 10px 20px;
+    position: relative;
+    background-color: inherit;
+    width: 100%;
+}
+
+
+/* Timeline circles  */
+.timeline--item::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    right: -8px;
+    background-color: white;
+    border: 4px solid #FF9F55;
+    top: 15px;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+/* Place the item to the left */
+.left {
+    left: 0;
+}
+
+/* Add arrows to the left container (pointing right) */
+.left::before {
+    content: " ";
+    height: 0;
+    position: absolute;
+    top: 22px;
+    width: 0;
+    z-index: 1;
+    right: 30px;
+    border: medium solid white;
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent white;
+}
+
+/* timeline content */
+.timeline--content {
+    padding: 20px 30px;
+    background-color: azure;
+    color: #474e5d;
+    position: relative;
+    border-radius: 6px;
+}
+
+.timeline--content:hover {
+    background-color: #1cd8d2;
+}
+.timeline--content > h2 {
+    margin-bottom: 4px;
+    color: black
+}
+.timeline--content > h2 > span {
+    font-size: 16px;
+    color: #474e5d;
+}
+
+.timeline--content > h2 {
+}
+
+/*---- END OF TIMELINE CHILDREN STYLES */
+
+/*---- MAIN CONTENT STYLES ----*/
+.content--item {
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+
+    height: 90vh;
+    width: 100%;
+    text-align: center;
+
+    margin: 50px 10px 0 10px;
+    border-radius: 4px;
+
+    position: relative;
+}
+
+.content--item > img {
+    width: 100%;
+    display: block;
+    margin: auto;
+    /*object-fit: cover;*/
+}
+
+.content--item > .content--item-text {
+    width: 100%;
+    height: 100%;
+
+    padding: 0 10px 4px 10px;
+    text-align: left;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: end;
+    align-items: flex-start;
+
+    flex-direction: column;
+    opacity: 0.3;
+    transition: 0.6s;
+}
+
+.content--item > .content--item-text:hover {
+    opacity: 1;
+    padding-bottom: 50px;
+}
+
+/*#content--item-text-intro{*/
+/*    margin-top: 0;*/
+/*}*/
+
+.content--item > .content--item-text > * {
+    transform: translateY(25px);
+    transition: transform 0.6s ;
+}
+
+.content--item > .content--item-text:hover > * {
+    transform: translateY(0px);
+}
+.content--item-text > h3 {
+    color: #1cd8d2;
+}
+.content--item-text > p{
+    line-height: 32px;
+    letter-spacing: normal;
+}
+
+/*---- END OF MAIN CONTENT STYLES ----*/
+
+/* ---- MEDIA QUERIES ----*/
+@media screen and (max-width: 600px) {
+    main {
+        flex-direction: column-reverse;
+    }
+
+    main > section {
+        width: 100vw;
+    }
+
+    .timeline--wrapper {
+        width: 100%;
+    }
+
+    .content--item {
+        height: auto;
+    }
+
+    .content--item > .content--item-text {
+        justify-content: center;
+    }
+
+}
