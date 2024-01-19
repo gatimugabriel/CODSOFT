@@ -169,7 +169,7 @@ section {
     width: 100%;
     display: block;
     margin: auto;
-    /*object-fit: cover;*/
+    object-fit: contain;
 }
 
 .content--item > .content--item-text {
@@ -216,6 +216,7 @@ section {
     line-height: 32px;
     letter-spacing: normal;
 }
+
 
 /*---- END OF MAIN CONTENT STYLES ----*/
 
