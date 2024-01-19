@@ -50,8 +50,6 @@ const addJob = asyncHandler(async (req, res) => {
         title, category, company, companyLogo, location, type, experience, description, skills, salary
     } = req.body;
 
-    console.log(req.body)
-
     try {
         const existingJob = await Job.findOne({where: {title, company}})
         if (existingJob) {
@@ -72,9 +70,7 @@ const addJob = asyncHandler(async (req, res) => {
         console.log(e)
         res.status(500)
         throw new Error('Server error occurred');
-
     }
-
 });
 
 // @ desc ---- View a Job  @ access -- all
