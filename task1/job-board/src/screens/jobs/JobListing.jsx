@@ -201,7 +201,7 @@ export default function JobListing() {
                                 name="title_input"
                                 value={searchItem.title_input}
                                 onChange={handleSearchItemChange}
-                                placeholder="search by keyword..."
+                                placeholder="search by job title..."
                                 className="search-input"
                             />
                         </div>
