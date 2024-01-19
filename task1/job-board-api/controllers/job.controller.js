@@ -50,6 +50,8 @@ const addJob = asyncHandler(async (req, res) => {
         title, category, company, companyLogo, location, type, experience, description, skills, salary
     } = req.body;
 
+    console.log(req.body)
+    
     const existingJob = await Job.findOne({where: {title, company}})
     if (existingJob) {
         res.status(409)
