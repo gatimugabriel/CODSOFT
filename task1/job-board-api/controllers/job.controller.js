@@ -46,28 +46,35 @@ const getJobs = asyncHandler(async (req, res) => {
 // route  --POST-- [base_api]/jobs/add
 const addJob = asyncHandler(async (req, res) => {
     const employer_id = req.user.userId;
-
     const {
         title, category, company, companyLogo, location, type, experience, description, skills, salary
     } = req.body;
 
     console.log(req.body)
 
-    const existingJob = await Job.findOne({where: {title, company}})
-    if (existingJob) {
-        res.status(409)
-        throw new Error('You already created a similar job. Change the title or the company name')
+    try {
+        const existingJob = await Job.findOne({where: {title, company}})
+        if (existingJob) {
+            res.status(409)
+            throw new Error('You already created a similar job. Change the title or the company name')
+        }
+
+        const newJob = await Job.create({
+            title, category, company, companyLogo, location, type, experience, description, skills, salary, employer_id
+        });
+
+        if (!newJob) {
+            res.status(500)
+            throw new Error('Failed to create job. error occurred');
+        }
+        res.status(201).json({message: "job created successfully", newJob: newJob});
+    } catch (e) {
+        console.log(e)
+        res.status(500)
+        throw new Error('Server error occurred');
+
     }
 
-    const newJob = await Job.create({
-        title, category, company, companyLogo, location, type, experience, description, skills, salary, employer_id
-    });
-
-    if (!newJob) {
-        
-        res.status(500).json({success: false, message: 'Server error occurred'});
-    }
-    res.status(201).json({message: "job created successfully", newJob: newJob});
 });
 
 // @ desc ---- View a Job  @ access -- all
