@@ -1,6 +1,5 @@
 const jobsData = [
     {
-        "id": 1,
         "category": "Software Development",
         "title": "Full Stack Developer",
         "company": "Black-Curtain",
@@ -18,7 +17,6 @@ const jobsData = [
         "employer_id": 3
     },
     {
-        "id": 2,
         "category": "Data Science",
         "title": "Data Scientist",
         "company": "Black-Curtain",
@@ -36,7 +34,6 @@ const jobsData = [
         "employer_id": 3
     },
     {
-        "id": 3,
         "category": "Front-End",
         "title": "UI/UX Designer",
         "company": "Black-Curtain",
@@ -54,7 +51,6 @@ const jobsData = [
         "employer_id": 3
     },
     {
-        "id": 4,
         "category": "Back-End",
         "title": "Backend Developer",
         "company": "Black-Curtain",
@@ -72,7 +68,6 @@ const jobsData = [
         "employer_id": 3
     },
     {
-        "id": 5,
         "category": "Machine Learning",
         "title": "Machine Learning Eng",
         "company": "Black-Curtain",
@@ -90,7 +85,6 @@ const jobsData = [
         "employer_id": 3
     },
     {
-        "id": 6,
         "category": "Software Development",
         "title": "Full Steck Developer",
         "company": "Black-Curtain",
@@ -108,7 +102,6 @@ const jobsData = [
         "employer_id": 3
     },
     {
-        "id": 7,
         "category": "Data Science",
         "title": "Data Engineer",
         "company": "Black-Curtain",
@@ -126,7 +119,6 @@ const jobsData = [
         "employer_id": 3
     },
     {
-        "id": 8,
         "category": "Front-End",
         "title": "UX/UI Designer",
         "company": "Black-Curtain",
@@ -144,7 +136,6 @@ const jobsData = [
         "employer_id": 3
     },
     {
-        "id": 9,
         "category": "Back-End",
         "title": "Backend Lead",
         "company": "Black-Curtain",
@@ -162,7 +153,6 @@ const jobsData = [
         "employer_id": 3
     },
     {
-        "id": 10,
         "category": "Machine Learning",
         "title": "Machine Learning Engineer",
         "company": "ML-Labs",
@@ -180,7 +170,6 @@ const jobsData = [
         "employer_id": 1
     },
     {
-        "id": 11,
         "category": "Software Development",
         "title": "Full-Stack Engineer",
         "company": "ML-Labs",
@@ -198,7 +187,6 @@ const jobsData = [
         "employer_id": 1
     },
     {
-        "id": 12,
         "category": "Data Science",
         "title": "Data Skientist",
         "company": "ML-Labs",
@@ -216,7 +204,6 @@ const jobsData = [
         "employer_id": 1
     },
     {
-        "id": 13,
         "category": "Front-End",
         "title": "UI/UX Lead",
         "company": "ML-Labs",
@@ -234,7 +221,6 @@ const jobsData = [
         "employer_id": 1
     },
     {
-        "id": 14,
         "category": "Back-End",
         "title": "Backend Engineer Lead",
         "company": "ML-Labs",
@@ -252,7 +238,6 @@ const jobsData = [
         "employer_id": 1
     },
     {
-        "id": 15,
         "category": "Machine Learning",
         "title": "Deep Learning Eng",
         "company": "ML-Labs",
@@ -270,7 +255,6 @@ const jobsData = [
         "employer_id": 1
     },
     {
-        "id": 16,
         "category": "Web Development",
         "title": "Web Developer",
         "company": "ML-Labs",
@@ -288,7 +272,6 @@ const jobsData = [
         "employer_id": 1
     },
     {
-        "id": 17,
         "category": "Data Science",
         "title": "Big Data Engineer",
         "company": "ML-Labs",
@@ -306,7 +289,6 @@ const jobsData = [
         "employer_id": 1
     },
     {
-        "id": 18,
         "category": "UI/UX",
         "title": "UI/UX Developer",
         "company": "ML-Labs",
@@ -324,7 +306,6 @@ const jobsData = [
         "employer_id": 1
     },
     {
-        "id": 19,
         "category": "Systems",
         "title": "Sytem Designer",
         "company": "ML-Labs",
@@ -342,7 +323,6 @@ const jobsData = [
         "employer_id": 1
     },
     {
-        "id": 20,
         "category": "Accounting",
         "title": "Accountant",
         "company": "ML-Labs",
@@ -360,8 +340,6 @@ const jobsData = [
         "employer_id": 1
     }
 ]
-
-
 
 
 const moreData = [
@@ -14047,4 +14025,4 @@ const moreData = [
     }
 ]
 
-module.exports =  {jobsData}
+module.exports = {jobsData}
