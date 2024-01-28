@@ -95,12 +95,47 @@ export default function SignUp() {
     };
 
     const handleInputChange = (e) => {
+        const {name, value} = e.target;
+
+        // live validation for password and confirm_password
+        if (name === "password" || name === "confirm_password") {
+            const passwordErrors = validatePassword(value);
+            setFormErrors((prevErrors) => ({
+                ...prevErrors,
+                [name]: passwordErrors,
+            }));
+        }
+
         setFormData((prevFormData) => ({
             ...prevFormData,
-            [e.target.name]: e.target.name === "company_logo" ? e.target.files[0] : e.target.value,
-            role: userRole
-        }))
-    }
+            [name]: name === "company_logo" ? e.target.files[0] : value,
+            role: userRole,
+        }));
+    };
+
+    const validatePassword = (password) => {
+        const errors = [];
+
+        if (password.length < 6) {
+            errors.push("at least 6 characters");
+        } else {
+            if (!/[a-z]/.test(password)) {
+                errors.push("at least one lowercase letter");
+            }
+            if (!/[A-Z]/.test(password)) {
+                errors.push("at least one uppercase letter");
+            }
+            if (!/\d/.test(password)) {
+                errors.push("at least one digit");
+            }
+            if (!/[^a-zA-Z0-9]/.test(password)) {
+                errors.push("at least one special character");
+            }
+        }
+
+        return errors;
+    };
+
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -168,7 +203,6 @@ export default function SignUp() {
         <main className="flex min-h-screen justify-center p-4 bg-gradient-to-br from-stone-200 to-indigo-200">
             <div className="flex flex-col gap-y-3">
                 <form className="bg-white p-10 rounded shadow-lg" onSubmit={handleSubmit}>
-
                     {/* STEP 1 (ROLE SELECT) */}
                     {currentStep === 1 && (
                         <>
@@ -259,7 +293,7 @@ export default function SignUp() {
 
                     {/* STEP 2 (for CANDIDATES)  || STEP 3 (for EMPLOYERS) */}
                     {(currentStep === totalSteps) &&
-                        <>
+                        <div>
                             <h2 className="text-2xl mb-6 font-bold text-stone-900">Create an Account</h2>
                             {/* inputs */}
                             {/* names */}
@@ -346,6 +380,11 @@ export default function SignUp() {
 
                                     }
                                 </div>
+
+                                {(formErrors.password && formErrors.password.length > 0) && (
+                                    <p>Password should have: <span
+                                        className="text-red-500">{formErrors.password.join(", ")}</span></p>
+                                )}
                             </div>
 
                             <div className="input-group">
@@ -387,6 +426,11 @@ export default function SignUp() {
                                         )
                                     }
                                 </div>
+
+                                {(formErrors.confirm_password && formErrors.confirm_password.length > 0) && (
+                                    <p>Password should have: <span
+                                        className="text-red-500">{formErrors.confirm_password.join(", ")}</span></p>
+                                )}
                             </div>
 
                             {/* Loading State */}
@@ -428,7 +472,7 @@ export default function SignUp() {
                             {/*        />*/}
                             {/*    </GoogleOAuthProvider>*/}
                             {/*</div>*/}
-                        </>
+                        </div>
                     }
 
                     {/* Navigation buttons */}
