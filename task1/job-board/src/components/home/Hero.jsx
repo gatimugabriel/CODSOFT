@@ -43,6 +43,7 @@ const Hero = () => {
                     className="h-full object-cover"
                     src={happyMan}
                     alt="Banner"
+                    loading="lazy"
                 />
             </section>
 

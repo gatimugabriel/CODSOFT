@@ -32,7 +32,7 @@ const getJobs = asyncHandler(async (req, res) => {
     }
 
     result.data = await Job.findAll({
-        order: [["id", "ASC"]],
+        order: [["id", "DESC"]],
         offset: startIndex,
         limit: limit
     })

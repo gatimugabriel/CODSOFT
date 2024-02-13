@@ -87,7 +87,7 @@ const verifyRefreshToken = asyncHandler(async (req, res, next) => {
 // })
 
 const requireEmployer = asyncHandler(async (req, res, next) => {
-    const userId = req.user.userId
+    const {userId} = req.user
     const user = await User.findByPk(+userId);
 
     if (!user) {

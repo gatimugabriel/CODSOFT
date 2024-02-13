@@ -11,6 +11,7 @@ export default function Hire() {
                         src={greetings}
                         alt="Employer Section"
                         className="w-full h-auto object-cover rounded"
+                        loading="lazy"
                     />
                 </div>
 
@@ -34,4 +35,3 @@ export default function Hire() {
         </div>
     );
 }
-

@@ -28,10 +28,10 @@ export default function GetHired() {
                         src={teamWork}
                         alt="candidate Section"
                         className="w-full h-auto object-cover rounded"
+                        loading="lazy"
                     />
                 </div>
             </div>
         </div>
     );
 }
-
