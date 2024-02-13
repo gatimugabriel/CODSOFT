@@ -421,8 +421,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     } else {
         const user = await User.findByPk(token.user_id);
 
-        const hashedPassword = await bcrypt.hash(password, 10)
-        user.password = hashedPassword
+        user.password = await bcrypt.hash(password, 10)
         const updatedUser = await user.save()
         const removeToken = await token.destroy()
 

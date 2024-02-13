@@ -88,6 +88,4 @@ const sendJobApplicationEmail = async (jobTitle, userEmail) => {
     }
 };
 
-
-
 module.exports = {sendVerificationEmail, sendResetPassword, sendJobApplicationEmail};
