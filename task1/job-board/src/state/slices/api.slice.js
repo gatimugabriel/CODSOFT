@@ -1,17 +1,17 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {Mutex} from "async-mutex";
-import {removeCredentials, setCredentials} from "./auth/auth.slice.js";
-import {toast} from "react-toastify";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Mutex } from "async-mutex";
+import { removeCredentials, setCredentials } from "./auth/auth.slice.js";
+import { toast } from "react-toastify";
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:8080/api/v1",
-    // baseUrl: "https://job-board-server-r34w.onrender.com/api/v1",
+    // baseUrl: "http://127.0.0.1:8080/api/v1",
+    baseUrl: "https://job-board-server-r34w.onrender.com/api/v1",
     credentials: "include",
-    prepareHeaders: (headers, {getState}) => {
+    prepareHeaders: (headers, { getState }) => {
         const accessToken = getState().auth.userInfo?.accessToken
         const userId = getState().auth.userInfo?.user?.userId
 
-        if (accessToken ) {
+        if (accessToken) {
             headers.set('Authorization', `Bearer ${accessToken}`)
             headers.set('UID', userId)
         }
@@ -39,7 +39,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
                 if (refreshResult.data) {
                     // update store with the new token
-                    api.dispatch(setCredentials({...refreshResult.data}))
+                    api.dispatch(setCredentials({ ...refreshResult.data }))
 
                     // retry the initial query
                     result = await baseQuery(args, api, extraOptions)
@@ -65,7 +65,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
 export const apiSlice
     = createApi({
-    baseQuery: (args, api, extraOptions) => baseQueryWithReauth(args, api, extraOptions),
-    tagTypes: ['User', 'Job', 'JobApplication'],
-    endpoints: (builder) => ({}),
-})
+        baseQuery: (args, api, extraOptions) => baseQueryWithReauth(args, api, extraOptions),
+        tagTypes: ['User', 'Job', 'JobApplication'],
+        endpoints: (builder) => ({}),
+    })
