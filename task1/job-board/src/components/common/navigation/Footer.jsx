@@ -6,7 +6,7 @@ export default function Footer() {
             <div className="w-full max-w-screen-xl mx-auto p-4 md:pt-8 md:pb-4">
                 <div className="flex flex-col md:flex-row justify-between">
                     <Link to={"/"} className="flex items-center my-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
-                        <img src="../../../../public/vite.svg" className="h-8" alt="Job-Board Logo"/>
+                        <img src="/vite.svg" className="h-8" alt="Job-Board Logo"/>
                         <span className="self-center text-2xl font-semibold whitespace-nowrap">Job Board</span>
                     </Link>
                     <div
