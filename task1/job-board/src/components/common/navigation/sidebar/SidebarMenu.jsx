@@ -54,7 +54,7 @@ export default function SidebarMenu({children}) {
                 {/* Sidebar Header */}
                 <div className="p-4 pb-2 flex justify-between items-center border-b border-b-stone-300">
                     <img
-                        src="../../../../../public/vite.svg"
+                        src="/vite.svg"
                         alt="site logo"
                         className={`overflow-hidden transition-all h-10 ${expanded ? "w-32" : "w-0"}`}
                     />
