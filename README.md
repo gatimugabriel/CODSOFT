@@ -6,10 +6,10 @@ Candidates get to apply jobs that match their skilss from a pool of posted jobs.
 Employers get an easier time to post their jobs as well as review candidate applications from the app. Candidate resumes are also attached to each job application a candidate has appplied.
 
 ### Tech Stack
-React
-Redux-Toolkit
-TailwindCSS
-ExpressJS
+React,
+Redux-Toolkit,
+TailwindCSS,
+ExpressJS,
 PostgreSQL
 
 ## 2. Tribute Page :  https://lmessi-tribute.netlify.app/
