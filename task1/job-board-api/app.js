@@ -38,6 +38,8 @@ const {jobsData} = require('./data/jobsData')
 const port = process.env['PORT'] || 5000
 app.listen(port, async () => {
     console.log(`\tServer alive at port ${port}`)
+    console.log(`\t Connecting to database...`)
+    
     await db.sequelize.authenticate()
         .then(async () => {
             console.log(`\n\t connected to ${process.env['DB']} database \n\t syncing models...\n`)
