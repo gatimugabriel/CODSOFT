@@ -1,18 +1,21 @@
 const {Sequelize} = require('sequelize')
 const {dbConfig} = require('../config')
 
-let sequelize = new Sequelize(
-    dbConfig.DB,
-    dbConfig.USER,
-    dbConfig.PASSWORD,
-    {
-        dialect: dbConfig.dialect,
-        host: dbConfig.HOST,
-        pool: dbConfig.pool,
-        operatorsAliases: 0,
-        ssl: true
-    }
-)
+// let sequelize = new Sequelize(
+//     dbConfig.DB,
+//     dbConfig.USER,
+//     dbConfig.PASSWORD,
+//     {
+//         dialect: dbConfig.dialect,
+//         host: dbConfig.HOST,
+//         pool: dbConfig.pool,
+//         operatorsAliases: 0,
+//         ssl: true
+//     }
+// )
+
+const DBPassword = process.env.DB_USER_PASSWORD
+let sequelize = `postgres://avnadmin:${DBPassword}@g-instance-project-zero.a.aivencloud.com:11948/defaultdb?sslmode=require`
 
 const db = {}
 
