@@ -23,6 +23,7 @@ export default function SignIn() {
 
     const [successMessage, setSuccessMessage] = useState('')
     const [showPassword, setShowPassword] = useState(false)
+
     const redirectPath = location.state ? location.state.path : "/dashboard"
 
     const [formData, setFormData] = useState({

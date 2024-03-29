@@ -12,9 +12,11 @@ function App() {
         <main className="min-h-screen w-full font-poppins">
             <Nav/>
             <ToastContainer/>
+
             <section className="min-h-screen">
                 <Outlet/>
             </section>
+
             <BackToTopButton />
             <footer>
                 <Footer/>

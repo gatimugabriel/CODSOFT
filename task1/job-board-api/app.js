@@ -32,8 +32,8 @@ require('./routes')(app, base_api)
 app.use(errorMiddleware.notFound)
 app.use(errorMiddleware.errorHandler)
 
-// const {Job} = require('./models')
-// const {jobsData} = require('./data/jobsData')
+const {Job} = require('./models')
+const {jobsData} = require('./data/jobsData')
 
 const port = process.env['PORT'] || 5000
 app.listen(port, async () => {
@@ -48,13 +48,13 @@ app.listen(port, async () => {
                     console.log(`\n\t models synchronized successfully\n`)
 
                     // -- called once --- //
-                    // Job.bulkCreate(jobsData)
-                    //     .then(() => {
-                    //         console.log(`\n\t data inserted successfully \n\n`);
-                    //     })
-                    //     .catch(error => {
-                    //         console.log(`\n\t failed to insert data! \n\t`, error);
-                    //     });
+                    Job.bulkCreate(jobsData)
+                        .then(() => {
+                            console.log(`\n\t data inserted successfully \n\n`);
+                        })
+                        .catch(error => {
+                            console.log(`\n\t failed to insert data! \n\t`, error);
+                        });
                 })
                 .catch(error => {
                     console.log(`\n\t failed to sync models! \n\t`, error)
