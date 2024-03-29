@@ -5,6 +5,7 @@ dbConfig = {
     DB: process.env['DB'],
     PORT: process.env['DB_PORT'],
     dialect: "postgres",
+    ssl: true,
     pool: {
         max: 5,
         min: 0,
