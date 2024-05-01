@@ -50,17 +50,17 @@ app.listen(port, async () => {
                     console.log(`\n\t models synchronized successfully\n`)
 
                     // -- called once --- //
-                    Job.bulkCreate(jobsData)
-                        .then(() => {
-                            console.log(`\n\t data inserted successfully \n\n`);
-                        })
-                        .catch(error => {
-                            console.log(`\n\t failed to insert data! \n\t`, error);
-                        });
-                })
-                .catch(error => {
-                    console.log(`\n\t failed to sync models! \n\t`, error)
-                })
+                //     Job.bulkCreate(jobsData)
+                //         .then(() => {
+                //             console.log(`\n\t data inserted successfully \n\n`);
+                //         })
+                //         .catch(error => {
+                //             console.log(`\n\t failed to insert data! \n\t`, error);
+                //         });
+                // })
+                // .catch(error => {
+                //     console.log(`\n\t failed to sync models! \n\t`, error)
+                // })
         })
         .catch(error => {
             console.log(`\n\t failed to connect to ${process.env['DB']} database! \n\n\t`, error)
