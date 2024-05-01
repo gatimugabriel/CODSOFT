@@ -57,10 +57,10 @@ app.listen(port, async () => {
                 //         .catch(error => {
                 //             console.log(`\n\t failed to insert data! \n\t`, error);
                 //         });
-                // })
-                // .catch(error => {
-                //     console.log(`\n\t failed to sync models! \n\t`, error)
-                // })
+                })
+                .catch(error => {
+                    console.log(`\n\t failed to sync models! \n\t`, error)
+                })
         })
         .catch(error => {
             console.log(`\n\t failed to connect to ${process.env['DB']} database! \n\n\t`, error)
