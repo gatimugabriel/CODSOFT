@@ -17,7 +17,7 @@ let sequelize = new Sequelize(
 )
 
 // const DBPassword = process.env.DB_USER_PASSWORD
-// let sequelize = `postgres://avnadmin:${DBPassword}@g-instance-project-zero.a.aivencloud.com:11948/defaultdb?sslmode=require`
+// let sequelize = `postgres://avnadmin:${DBPassword}@g-instance-project-zero.a.aivencloud.com:11948/job-board?sslmode=require`
 
 const db = {}
 
