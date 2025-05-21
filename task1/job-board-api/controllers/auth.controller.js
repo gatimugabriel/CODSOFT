@@ -31,7 +31,6 @@ const resendEmailToUnverifiedUser = asyncHandler(async (res, user) => {
             "Verification email sent to your inbox. Check your email to verify your account ",
     })
 })
-
 // @ desc ---- Google Authentication (Signup/Signin)
 // route  --POST-- [base_api]/auth/google
 const googleAuth = asyncHandler(async (req, res) => {

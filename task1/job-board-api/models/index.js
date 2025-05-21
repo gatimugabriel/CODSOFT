@@ -1,5 +1,5 @@
-const {Sequelize} = require('sequelize')
-const {dbConfig} = require('../config')
+const { Sequelize } = require('sequelize')
+const { dbConfig } = require('../config')
 
 let sequelize = new Sequelize(
     dbConfig.DB,
@@ -7,17 +7,21 @@ let sequelize = new Sequelize(
     dbConfig.PASSWORD,
     {
         dialect: dbConfig.dialect,
+        port: dbConfig.PORT,
         host: dbConfig.HOST,
         pool: dbConfig.pool,
-        operatorsAliases: 0,
-        ssl: {
-            require: true
+        dialectOptions: {
+            ssl: {
+                require: dbConfig.ssl,
+                rejectUnauthorized: false 
+            }
+        },
+        
+        define: {
+            operatorsAliases: false
         }
     }
-)
-
-// const DBPassword = process.env.DB_USER_PASSWORD
-// let sequelize = `postgres://avnadmin:${DBPassword}@g-instance-project-zero.a.aivencloud.com:11948/job-board?sslmode=require`
+);
 
 const db = {}
 
@@ -26,42 +30,42 @@ db.Sequelize = Sequelize
 db.sequelize = sequelize
 
 // -- models -- //
-const {User} = require('./user.model')(sequelize, Sequelize)
-const {Job} = require('./job.model')(sequelize, Sequelize)
-const {Company} = require('./company.model')(sequelize, Sequelize)
-const {Token} = require('./token.model')(sequelize, Sequelize)
-const {Bookmark} = require('./bookmark.model')(sequelize, Sequelize)
-const {JobApplication} = require('./jobApplication.model')(sequelize, Sequelize)
+const { User } = require('./user.model')(sequelize, Sequelize)
+const { Job } = require('./job.model')(sequelize, Sequelize)
+const { Company } = require('./company.model')(sequelize, Sequelize)
+const { Token } = require('./token.model')(sequelize, Sequelize)
+const { Bookmark } = require('./bookmark.model')(sequelize, Sequelize)
+const { JobApplication } = require('./jobApplication.model')(sequelize, Sequelize)
 
 // -- associations -- /
 //-- USER
 // user(employer) <-> job
-User.hasMany(Job, {foreignKey: 'employer_id'})
-Job.belongsTo(User, {foreignKey: 'employer_id'})
+User.hasMany(Job, { foreignKey: 'employer_id' })
+Job.belongsTo(User, { foreignKey: 'employer_id' })
 
 // user(employer) <-> company
-User.hasMany(Company, {foreignKey: 'employer_id'})
-Company.belongsTo(User, {foreignKey: 'employer_id'})
+User.hasMany(Company, { foreignKey: 'employer_id' })
+Company.belongsTo(User, { foreignKey: 'employer_id' })
 
 //-- BOOKMARKS
 // user <-> bookmark
-User.hasMany(Bookmark, {foreignKey: 'user_id'})
-Bookmark.belongsTo(User, {foreignKey: 'user_id'})
+User.hasMany(Bookmark, { foreignKey: 'user_id' })
+Bookmark.belongsTo(User, { foreignKey: 'user_id' })
 
 // job <-> bookmark
-Job.hasMany(Bookmark, {foreignKey: 'job_id'})
-Bookmark.belongsTo(Job, {foreignKey: 'job_id'})
+Job.hasMany(Bookmark, { foreignKey: 'job_id' })
+Bookmark.belongsTo(Job, { foreignKey: 'job_id' })
 
 //-- APPLICATIONS
 // user <-> job application
-User.hasMany(JobApplication, {foreignKey: 'user_id'});
+User.hasMany(JobApplication, { foreignKey: 'user_id' });
 JobApplication.belongsTo(User, {
     foreignKey: 'user_id',
     onDelete: 'CASCADE',
 });
 
 // job <-> job application
-Job.hasMany(JobApplication, {foreignKey: 'job_id'});
+Job.hasMany(JobApplication, { foreignKey: 'job_id' });
 JobApplication.belongsTo(Job, {
     foreignKey: 'job_id',
     onDelete: 'CASCADE',
@@ -79,6 +83,6 @@ JobApplication.belongsTo(Job, {
 //     onUpdate: 'CASCADE'
 // });
 
-Object.assign(db, {User, Job, Company, Token, Bookmark, JobApplication})
+Object.assign(db, { User, Job, Company, Token, Bookmark, JobApplication })
 
 module.exports = db

@@ -22,6 +22,7 @@ router.post('/add', [
         inputValidation.validate
     ],
     jobController.addJob);
+
 router.route('/:jobId')
     .put(authMiddleware.requireEmployer, jobController.updateJob)
     .delete(authMiddleware.requireEmployer, jobController.deleteJob);

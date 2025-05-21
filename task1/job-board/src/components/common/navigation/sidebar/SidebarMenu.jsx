@@ -62,7 +62,7 @@ export default function SidebarMenu({ children }) {
           <img
             src="/vite.svg"
             alt="site logo"
-            className={`overflow-hidden transition-all h-10 ${
+               className={`overflow-hidden transition-all h-10 ${
               expanded ? "w-32" : "w-0"
             }`}
           />

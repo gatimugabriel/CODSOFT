@@ -30,7 +30,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         {
             freezeTableName: true,
-            timestamps: true,
+            timestamps: false,
         });
 
     return {Company};
